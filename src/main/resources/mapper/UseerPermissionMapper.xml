@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wn.dao.UserPermissionDao">
+    <resultMap id="BaseResult" type="UserPermission">
+        <id column="permission_id" property="permission_id"></id>
+        <result column="per_name" property="per_name"></result>
+    </resultMap>
+
+    <select id="selectByRoler" resultMap="BaseResult" parameterType="string">
+        select pn.* from
+        wn_user su,
+        wn_role sr,
+        wn_permission pn,
+        wn_group gp,
+        wn_g_permission gpn where
+        su.group_id = sr.role_uid and sr.role_gid =gp.group_id
+        and gp.group_id =gpn.group_id and gpn.permission_id = pn.permission_id and su.user_name =#{name}
+    </select>
+</mapper>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wn.dao.AdminDao">
+	<resultMap type="Admin" id="baseResultAdmin">
+
+
+		<!-- <id column="admin_id" property="admin_id" /> <result column="admin_name" 
+			property="admin_name" /> <result column="admin_pwd" property="admin_pwd" 
+			/> <result column="admin_random" property="admin_random" /> <result column="admin_status" 
+			property="admin_status" /> <result column="admin_auth" property="admin_auth" 
+			/> <result column="admin_login_time" property="admin_login_time" /> <result 
+			column="admin_login_ip" property="admin_login_ip" /> <result column="admin_login_num" 
+			property="admin_login_num" /> <result column="admin_last_login_time" property="admin_last_login_time" 
+			/> <result column="admin_last_login_ip" property="admin_last_login_ip" /> -->
+
+
+	</resultMap>
+	
+	<!-- login -->
+	<select id="selLogin" resultMap="baseResultAdmin">
+	  select * from wn_admin where admin_name=#{admin_name} and admin_pwd=#{admin_pwd}
+	</select>
+	
+	
+	
+
+	
+	
+	
+	
+	<!-- 查询 -->
+	<select id="selectAll" resultMap="baseResultAdmin"
+		parameterType="Admin">
+		select * from wn_admin
+		<where>
+			<if test="admin_id != null">
+				admin_id=#{admin_id}
+			</if>
+			<if test="admin_name != null">
+				and admin_name=#{admin_name}
+			</if>
+			<if test="admin_pwd != null">
+				and admin_pwd=#{admin_pwd}
+			</if>
+			<if test="admin_random != null">
+				and admin_random=#{admin_random}
+			</if>
+			<if test="admin_status != null">
+				and admin_status=#{admin_status}
+			</if>
+			<if test="admin_auth != null">
+				and admin_auth=#{admin_auth}
+			</if>
+			<if test="admin_login_time != null">
+				and admin_login_time=#{admin_login_time}
+			</if>
+			<if test="admin_login_ip != null">
+				and admin_login_ip=#{admin_login_ip}
+			</if>
+			<if test="admin_login_num != null">
+				and admin_login_num=#{admin_login_num}
+			</if>
+			<if test="admin_last_login_time != null">
+				and admin_last_login_time=#{admin_last_login_time}
+			</if>
+			<if test="admin_last_login_ip != null">
+				and admin_last_login_ip=#{admin_last_login_ip}
+			</if>
+
+		</where>
+	</select>
+
+
+	<!-- 模糊查询 -->
+	<select id="selectLike" resultMap="baseResultAdmin"
+		parameterType="Admin">
+		select * from wn_admin
+		<where>
+			<if test="admin_id!=null">
+				admin_id like #{admin_id}
+			</if>
+			<if test="admin_name != null">
+				and admin_name like #{admin_name}
+			</if>
+			<if test="admin_pwd != null">
+				and admin_pwd like #{admin_pwd}
+			</if>
+			<if test="admin_random != null">
+				and admin_random like #{admin_random}
+			</if>
+			<if test="admin_status != null">
+				and admin_status like #{admin_status}
+			</if>
+			<if test="admin_auth != null">
+				and admin_auth like #{admin_auth}
+			</if>
+			<if test="admin_login_time != null">
+				and admin_login_time like #{admin_login_time}
+			</if>
+			<if test="admin_login_ip != null">
+				and admin_login_ip like #{admin_login_ip}
+			</if>
+			<if test="admin_login_num != null">
+				and admin_login_num like #{admin_login_num}
+			</if>
+			<if test="admin_last_login_time != null">
+				and admin_last_login_time like #{admin_last_login_time}
+			</if>
+			<if test="admin_last_login_ip != null">
+				and admin_last_login_ip like #{admin_last_login_ip}
+			</if>
+
+		</where>
+	</select>
+	<!-- 增 -->
+	<insert id="insert" parameterType="Admin">
+		insert into wn_admin
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="admin_name != null">
+				admin_name,
+			</if>
+			<if test="admin_pwd != null">
+				admin_pwd,
+			</if>
+			<if test="admin_random != null">
+				admin_random,
+			</if>
+			<if test="admin_status != null">
+				admin_status,
+			</if>
+			<if test="admin_auth != null">
+				admin_auth,
+			</if>
+			<if test="admin_login_time != null">
+				admin_login_time,
+			</if>
+			<if test="admin_login_ip != null">
+				admin_login_ip,
+			</if>
+			<if test="admin_login_num != null">
+				admin_login_num,
+			</if>
+			<if test="admin_last_login_time != null">
+				admin_last_login_time,
+			</if>
+			<if test="admin_last_login_ip != null">
+				admin_last_login_ip,
+			</if>
+
+
+		</trim>
+		<trim prefix="values(" suffixOverrides="," suffix=")">
+
+			<if test="admin_name != null">
+				#{admin_name},
+			</if>
+			<if test="admin_pwd != null">
+				#{admin_pwd},
+			</if>
+			<if test="admin_random != null">
+				#{admin_random},
+			</if>
+			<if test="admin_status != null">
+				#{admin_status},
+			</if>
+			<if test="admin_auth != null">
+				#{admin_auth},
+			</if>
+			<if test="admin_login_time != null">
+				#{admin_login_time},
+			</if>
+			<if test="admin_login_ip != null">
+				#{admin_login_ip},
+			</if>
+			<if test="admin_login_num != null">
+				#{admin_login_num},
+			</if>
+			<if test="admin_last_login_time != null">
+				#{admin_last_login_time},
+			</if>
+			<if test="admin_last_login_ip != null">
+				#{admin_last_login_ip},
+			</if>
+		</trim>
+	</insert>
+	<!-- 删 -->
+	<delete id="delete" parameterType="map">
+		delete from mac_admin where admin_id in
+
+		<foreach item="a" collection="enos" open="(" separator=","
+			close=")">
+			#{a}
+		</foreach>
+	</delete>
+	<!-- 改 -->
+	<update id="update" parameterType="Admin">
+		update mac_admin
+		<set>
+			<if test="admin_name != null">
+				admin_name=#{admin_name},
+			</if>
+			<if test="admin_pwd != null">
+				admin_pwd=#{admin_pwd},
+			</if>
+			<if test="admin_random != null">
+				admin_random=#{admin_random},
+			</if>
+			<if test="admin_status != null">
+				admin_status=#{admin_status},
+			</if>
+			<if test="admin_auth != null">
+				admin_auth=#{admin_auth},
+			</if>
+			<if test="admin_login_time != null">
+				admin_login_time=#{admin_login_time},
+			</if>
+			<if test="admin_login_ip != null">
+				admin_login_ip=#{admin_login_ip},
+			</if>
+			<if test="admin_login_num != null">
+				admin_login_num=#{admin_login_num},
+			</if>
+			<if test="admin_last_login_time != null">
+				admin_last_login_time=#{admin_last_login_time},
+			</if>
+			<if test="admin_last_login_ip != null">
+				admin_last_login_ip=#{admin_last_login_ip},
+			</if>
+		</set>
+		where admin_id=#{admin_id}
+
+	</update>
+	<!-- 查询总行数 -->
+	<resultMap type="int" id="selcount"></resultMap>
+	<select id="selectCount" resultMap="selcount" parameterType="Admin">
+		select count(*) from wn_admin
+		<where>
+			<if test="admin_id != null">
+				admin_id=#{admin_id}
+			</if>
+			<if test="admin_name != null">
+				and admin_name=#{admin_name}
+			</if>
+			<if test="admin_pwd != null">
+				and admin_pwd=#{admin_pwd}
+			</if>
+			<if test="admin_random != null">
+				and admin_random=#{admin_random}
+			</if>
+			<if test="admin_status != null">
+				and admin_status=#{admin_status}
+			</if>
+			<if test="admin_auth != null">
+				and admin_auth=#{admin_auth}
+			</if>
+			<if test="admin_login_time != null">
+				and admin_login_time=#{admin_login_time}
+			</if>
+			<if test="admin_login_ip != null">
+				and admin_login_ip=#{admin_login_ip}
+			</if>
+			<if test="admin_login_num != null">
+				and admin_login_num=#{admin_login_num}
+			</if>
+			<if test="admin_last_login_time != null">
+				and admin_last_login_time=#{admin_last_login_time}
+			</if>
+			<if test="admin_last_login_ip != null">
+				and admin_last_login_ip=#{admin_last_login_ip}
+			</if>
+		</where>
+	</select>
+
+
+</mapper>

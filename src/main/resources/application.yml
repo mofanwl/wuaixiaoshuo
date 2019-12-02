@@ -1,0 +1,16 @@
+server:
+  port: 8584
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://wn.mofan.la:3306/woniuxs?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: woniuxs
+    password: hbyacKMkxcid4kLX
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.wn.pojo
+qiniu:
+  accessKey: iFwo0wTyO8AG-8AJHy2Inw3AtdJ6qZNGz_W45NGV
+  secretKey: swuCpU4nxIJkBjbtOgC5xdg7VXSG9Jy5Hlpsw-Fs
+  bucket: 11-21-file
+  url: http://q1bjiy8xr.bkt.clouddn.com/

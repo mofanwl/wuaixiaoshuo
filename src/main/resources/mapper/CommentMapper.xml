@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wn.dao.CommentDao">
+	<resultMap type="Comment" id="baseResultComment">
+
+
+	</resultMap>
+	<!-- 查询 -->
+	<select id="selectAll" resultMap="baseResultComment"
+		parameterType="Comment">
+		select * from wn_comment
+		<where>
+			<if test="comment_id ! =null">
+				comment_id=#{comment_id}
+			</if>
+			<if test="comment_mid ! =null">
+				and comment_mid=#{comment_mid}
+			</if>
+			<if test="comment_rid ! =null">
+				and comment_rid=#{comment_rid}
+			</if>
+			<if test="comment_pid ! =null">
+				and comment_pid=#{comment_pid}
+			</if>
+			<if test="user_id ! =null">
+				and user_id=#{user_id}
+			</if>
+			<if test="comment_name ! =null">
+				and comment_name=#{comment_name}
+			</if>
+			<if test="comment_status ! =null">
+				and comment_status=#{comment_status}
+			</if>
+			<if test="comment_ip ! =null">
+				and comment_ip=#{comment_ip}
+			</if>
+			<if test="comment_time ! =null">
+				and comment_time=#{comment_time}
+			</if>
+			<if test="comment_content ! =null">
+				and comment_content=#{comment_content}
+			</if>
+			<if test="comment_up ! =null">
+				and comment_up=#{comment_up}
+			</if>
+			<if test="comment_down ! =null">
+				and comment_down=#{comment_down}
+			</if>
+			<if test="comment_reply ! =null">
+				and comment_reply=#{comment_reply}
+			</if>
+			<if test="comment_report ! =null">
+				and comment_report=#{comment_report}
+			</if>
+
+		</where>
+	</select>
+
+
+	<!-- 模糊查询 -->
+	<select id="selectLike" resultMap="baseResultComment"
+		parameterType="Comment">
+		select * from wn_comment
+		<where>
+			<if test="group_id!=null">
+				group_id like #{group_id}
+			</if>
+			<if test="comment_mid ! =null">
+				and comment_mid like #{comment_mid}
+			</if>
+			<if test="comment_rid ! =null">
+				and comment_rid like #{comment_rid}
+			</if>
+			<if test="comment_pid ! =null">
+				and comment_pid like #{comment_pid}
+			</if>
+			<if test="user_id ! =null">
+				and user_id like #{user_id}
+			</if>
+			<if test="comment_name ! =null">
+				and comment_name like #{comment_name}
+			</if>
+			<if test="comment_status ! =null">
+				and comment_status like #{comment_status}
+			</if>
+			<if test="comment_ip ! =null">
+				and comment_ip like #{comment_ip}
+			</if>
+			<if test="comment_time ! =null">
+				and comment_time like #{comment_time}
+			</if>
+			<if test="comment_content ! =null">
+				and comment_content like #{comment_content}
+			</if>
+			<if test="comment_up ! =null">
+				and comment_up like #{comment_up}
+			</if>
+			<if test="comment_down ! =null">
+				and comment_down like #{comment_down}
+			</if>
+			<if test="comment_reply ! =null">
+				and comment_reply like #{comment_reply}
+			</if>
+			<if test="comment_report ! =null">
+				and comment_report like #{comment_report}
+			</if>
+		</where>
+	</select>
+	<!-- 增 -->
+	<insert id="insert" parameterType="Comment">
+		insert into wn_comment
+		<trim prefix="(" suffixOverrides="," suffix=")">
+
+			<if test="comment_mid ! =null">
+				comment_mid,
+			</if>
+			<if test="comment_rid ! =null">
+				comment_rid,
+			</if>
+			<if test="comment_pid ! =null">
+				comment_pid,
+			</if>
+			<if test="user_id ! =null">
+				user_id,
+			</if>
+			<if test="comment_name ! =null">
+				comment_name,
+			</if>
+			<if test="comment_status ! =null">
+				comment_status,
+			</if>
+			<if test="comment_ip ! =null">
+				comment_ip,
+			</if>
+			<if test="comment_time ! =null">
+				and comment_time,
+			</if>
+			<if test="comment_content ! =null">
+				comment_content,
+			</if>
+			<if test="comment_up ! =null">
+				comment_up,
+			</if>
+			<if test="comment_down ! =null">
+				comment_down,
+			</if>
+			<if test="comment_reply ! =null">
+				comment_reply,
+			</if>
+			<if test="comment_report ! =null">
+				comment_report,
+			</if>
+
+		</trim>
+		<trim prefix="values(" suffixOverrides="," suffix=")">
+
+			<if test="comment_mid ! =null">
+				#{comment_mid},
+			</if>
+			<if test="comment_rid ! =null">
+				#{comment_rid},
+			</if>
+			<if test="comment_pid ! =null">
+				#{comment_pid},
+			</if>
+			<if test="user_id ! =null">
+				#{user_id},
+			</if>
+			<if test="comment_name ! =null">
+				#{comment_name},
+			</if>
+			<if test="comment_status ! =null">
+				#{comment_status},
+			</if>
+			<if test="comment_ip ! =null">
+				#{comment_ip},
+			</if>
+			<if test="comment_time ! =null">
+				#{comment_time},
+			</if>
+			<if test="comment_content ! =null">
+				#{comment_content},
+			</if>
+			<if test="comment_up ! =null">
+				#{comment_up},
+			</if>
+			<if test="comment_down ! =null">
+				#{comment_down},
+			</if>
+			<if test="comment_reply ! =null">
+				#{comment_reply},
+			</if>
+			<if test="comment_report ! =null">
+				#{comment_report},
+			</if>
+
+
+		</trim>
+	</insert>
+	<!-- 删 -->
+	<delete id="delete" parameterType="map">
+		delete from wn_comment where comment_id in
+
+		<foreach item="c" collection="enos" open="(" separator=","
+			close=")">
+			#{c}
+		</foreach>
+	</delete>
+	<!-- 改 -->
+	<update id="update" parameterType="Comment">
+		update mac_comment
+		<set>
+			
+			<if test="comment_mid ! =null">
+				and comment_mid=#{comment_mid},
+			</if>
+			<if test="comment_rid ! =null">
+				and comment_rid=#{comment_rid},
+			</if>
+			<if test="comment_pid ! =null">
+				and comment_pid=#{comment_pid},
+			</if>
+			<if test="user_id ! =null">
+				and user_id=#{user_id},
+			</if>
+			<if test="comment_name ! =null">
+				and comment_name=#{comment_name},
+			</if>
+			<if test="comment_status ! =null">
+				and comment_status=#{comment_status},
+			</if>
+			<if test="comment_ip ! =null">
+				and comment_ip=#{comment_ip},
+			</if>
+			<if test="comment_time ! =null">
+				and comment_time=#{comment_time},
+			</if>
+			<if test="comment_content ! =null">
+				and comment_content=#{comment_content},
+			</if>
+			<if test="comment_up ! =null">
+				and comment_up=#{comment_up},
+			</if>
+			<if test="comment_down ! =null">
+				and comment_down=#{comment_down},
+			</if>
+			<if test="comment_reply ! =null">
+				and comment_reply=#{comment_reply},
+			</if>
+			<if test="comment_report ! =null">
+				and comment_report=#{comment_report},
+			</if>
+
+		</set>
+		where comment_id=#{comment_id}
+
+	</update>
+	<resultMap type="int" id="selcount"></resultMap>
+	<select id="selectCount" resultMap="selcount" parameterType="Comment">
+		select count(*) from wn_comment
+		<where>
+			<if test="comment_id != null">
+				comment_id=#{comment_id}
+			</if>
+			<if test="comment_mid ! =null">
+				and comment_mid=#{comment_mid}
+			</if>
+			<if test="comment_rid ! =null">
+				and comment_rid=#{comment_rid}
+			</if>
+			<if test="comment_pid ! =null">
+				and comment_pid=#{comment_pid}
+			</if>
+			<if test="user_id ! =null">
+				and user_id=#{user_id}
+			</if>
+			<if test="comment_name ! =null">
+				and comment_name=#{comment_name}
+			</if>
+			<if test="comment_status ! =null">
+				and comment_status=#{comment_status}
+			</if>
+			<if test="comment_ip ! =null">
+				and comment_ip=#{comment_ip}
+			</if>
+			<if test="comment_time ! =null">
+				and comment_time=#{comment_time}
+			</if>
+			<if test="comment_content ! =null">
+				and comment_content=#{comment_content}
+			</if>
+			<if test="comment_up ! =null">
+				and comment_up=#{comment_up}
+			</if>
+			<if test="comment_down ! =null">
+				and comment_down=#{comment_down}
+			</if>
+			<if test="comment_reply ! =null">
+				and comment_reply=#{comment_reply}
+			</if>
+			<if test="comment_report ! =null">
+				and comment_report=#{comment_report}
+			</if>
+			
+
+		</where>
+	</select>
+</mapper>
