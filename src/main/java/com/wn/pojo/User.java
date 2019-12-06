@@ -15,6 +15,7 @@ public class User {
 	private String user_phone;// 联系电话
 	private Integer user_status;// 状态
 	private String user_portrait;// 头像
+	private String user_total_mount;// 余额
 	private String user_portrait_thumb;// 小头像
 	private String user_openid_qq;// qq关联
 	private String user_openid_weixin;// 微信关联
@@ -23,6 +24,7 @@ public class User {
 	private Integer user_points;// 积分
 	private Integer user_points_froze;// 积分冻结
 	private Long user_reg_time;// 注册时间
+	private String user_vip_time;//vie到期时间
 	private Long user_reg_ip;// 注册ip
 	private Long user_login_time;// 登录时间
 	private Long user_login_ip;// 登录ip
@@ -35,5 +37,6 @@ public class User {
 	private Integer user_pid;// 用户PID
 	private Integer user_pid_2;// PID2
 	private Integer user_pid_3;// PID3
+	private String user_yzm;// 验证码
 
 }

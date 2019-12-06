@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wn.dao.OrderPayDao">
+    <resultMap type="OrderPay" id="baseResultOrderPay">
+
+    </resultMap>
+    <!--后台用户id查询订单-->
+    <select id="selAdminOrderPayByUserid" parameterType="int" resultMap="baseResultOrderPay">
+        select wp.* from
+        wn_pay wp,
+        wn_order_pay wop WHERE
+        wp.pay_id=wop.pay_id and
+        wop.user_id=#{user_id}
+    </select>
+    <!--后台订单号查询订单-->
+    <select id="selAdminOrderPayByOid" parameterType="String" resultMap="baseResultOrderPay">
+      select * from
+        wn_pay wp,
+        wn_order_pay wop WHERE
+        wp.pay_id=wop.pay_id and
+        wp.out_trade_no=#{out_trade_no}
+    </select>
+    <!--后台订单查询-->
+    <select id="selAdminListOrderPay" resultMap="baseResultOrderPay">
+       select * from
+        wn_pay wp,
+        wn_order_pay wop WHERE
+        wp.pay_id=wop.pay_id
+    </select>
+
+
+    <!--User-->
+    <!--订单号查询用户-->
+    <select id="selUserIdByTrade" parameterType="String" resultMap="baseResultOrderPay">
+    select * from
+        wn_pay wp,
+        wn_order_pay wop WHERE
+        wp.pay_id=wop.pay_id and
+        wp.out_trade_no=#{out_trade_no}
+    </select>
+    <!--用户的订单查询-->
+    <select id="selUserByPay" parameterType="string" resultMap="baseResultOrderPay">
+        select wp.* from
+        wn_pay wp,
+        wn_order_pay wop WHERE
+        wp.pay_id=wop.pay_id and
+        wop.user_id=#{user_id}
+
+    </select>
+
+
+    <!-- 写入生成的订单号，金额，支付状态，-->
+    <insert id="insertPay" parameterType="OrderPay">
+        insert into wn_pay(out_trade_no,total_amount,subject,pay_state,pay_time) values(#{out_trade_no},#{total_amount},#{subject},#{pay_state},#{pay_time})
+    </insert>
+    <!--查询生成的订单号，金额，支付状态-->
+    <select id="selectByTrade" parameterType="String" resultMap="baseResultOrderPay">
+        select * from wn_pay where out_trade_no=#{out_trade_no}
+    </select>
+
+    <!--修改订单状态-->
+    <update id="updateStateAndTotal" parameterType="OrderPay">
+        update wn_pay set pay_state=#{pay_state},total_amount_1=#{total_amount_1},pay_time_1=#{pay_time_1} where out_trade_no=#{out_trade_no}
+    </update>
+
+
+    <!--写入关系数据-->
+    <insert id="insertOrderAndPay" parameterType="OrderPay">
+          insert into wn_order_pay(user_id,pay_id) values(#{user_id},#{pay_id})
+    </insert>
+
+</mapper>

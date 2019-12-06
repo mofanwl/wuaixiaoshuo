@@ -1,22 +1,28 @@
 package com.wn.controller;
 
 import com.google.gson.Gson;
+import com.wn.pojo.Port;
 import com.wn.pojo.User;
 import com.wn.service.UserService;
 import com.wn.utils.MD5;
 import com.wn.utils.Shortt;
+import com.wn.utils.Tools;
+import com.wn.utils.UploadUtils;
 import com.wn.vo.Msg;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.tools.Tool;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -30,12 +36,102 @@ import java.util.Map;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	//七牛
+	@Value("${qiniu.url}")
+	private String url;
+	@Autowired
+	private UploadUtils uploadUtils;
 
-	@RequestMapping("/show")
-	@ResponseBody
-	public List<User> show() {
-		List<User> list = userService.selectAll(null);
-		return list;
+
+	/*
+	vip充值
+	 */
+	@RequestMapping("/tovip")
+	public Map<String,String> tovip(@RequestParam("user_id")Integer user_id,@RequestParam("mount") Float mount){
+		Map<String,String> map=new HashMap<>();
+		//查询余额
+		User user = userService.selectUserById(user_id);
+		String user_total_mount = user.getUser_total_mount();
+		if((Float.valueOf(user_total_mount)-mount)>=0){
+			System.out.println("会员余额ok");
+			User user1 = new User();
+			user1.setUser_id(user_id);
+			user1.setUser_total_mount(String.valueOf(Float.valueOf(user_total_mount)-mount));
+
+			int update = userService.update(user1);
+			if(update==1){
+				System.out.println("会员充值成功");
+				map.put("msg","ok");
+			}else {
+				System.out.println("会员充值失败");
+				map.put("msg","no");
+			}
+		}else{
+			map.put("msg","mountno");
+		}
+		return map;
+	}
+	/*
+	用户头像上传
+	 */
+	@RequestMapping(value = "/touxiang")
+	public Port touxiang(@RequestParam("file") MultipartFile file,@RequestParam("idid")Integer id){
+		System.out.println("这是接收到的id:"+id);
+		System.out.println("touxiang");
+		Port port = new Port();
+		try {
+			//上传
+			String upload = uploadUtils.upload(file);//上传后返回文件名
+			System.out.println(upload);
+			User user = new User();
+			user.setUser_id(14);
+			user.setUser_portrait(url+upload);
+			//修改
+			int update = userService.update(user);
+			if(update==1){
+				System.out.println("ok");
+
+				port.setMsg("ok");
+			}else{
+				System.out.println("no");
+				port.setMsg("no");
+			}
+			return port;
+		}catch (Exception e){
+			port.setMsg("no");
+		}
+		return port;
+	}
+	/*
+	查询会员到期时间
+	 */
+	@RequestMapping("/selByVipTime")
+	public Map<String,String> selByVipTime() {
+		Map<String,String> map=new HashMap<>();
+       // String aLong = userService.selByVipTime(11);
+       // String time = Tools.getTime(Long.valueOf(aLong));
+
+        //加入用户到期时间
+       /* String s = Tools.toVip(30);
+        User user = new User();
+        user.setUser_id(11);
+        user.setUser_vip_time(s);
+        userService.insertVipTime(user);*/
+
+        //查询用户是否为VIp
+        String aLong = userService.selByVipTime(11);
+        String vip = Tools.getVip(aLong);
+        System.out.println(vip);
+		map.put("vip",vip);
+
+
+        //查询用户到期时间
+        String aLong1 = userService.selByVipTime(11);
+         String time = Tools.getVipTime(aLong1);
+		map.put("viptime",time);
+
+
+        return map;
 	}
 
 	/*
@@ -53,8 +149,6 @@ public class UserController {
 	public User selectOne(@RequestParam("user_name") String user_name) {
 		User user = userService.selectOne(user_name);
 		/*
-		 * System.out.println(user); Map<String,User> map=new HashMap<>();
-		 * map.put("user", user);
 		 */
 		return user;
 
@@ -75,58 +169,72 @@ public class UserController {
 	 */
 	@RequestMapping("/insert")
 	@ResponseBody
-	public Map<String, String> insert(HttpServletRequest request, HttpServletResponse response) {
-		String user_name = request.getParameter("user_name");
-		String user_pwd = request.getParameter("user_pwd");
-		String user_phone = request.getParameter("user_phone");
-		String user_yzm = request.getParameter("user_yzm");
-		User uuser = userService.selectOne(user_name);
-		Map<String, String> map = new HashMap<>();
-		if (uuser == null) {
-			User user = new User();
-			user.setUser_name(user_name);
-			MD5 md5 = new MD5();
-			user.setUser_pwd(md5.getMD5ofStr(user_pwd));
-			user.setUser_phone(user_phone);
-			// 短信验证
-			HttpSession session = request.getSession();
-			String phone_yzm = (String) session.getAttribute("phone_yzm");
-			System.out.println("取到的验证码：" + phone_yzm);
-			// 验证码正确
-			if (user_yzm.equals(phone_yzm)) {
-				System.out.println("验证码正确");
-				User userp = userService.selectPhone(user_phone);
-				if (userp == null) {
-					int res = userService.insert(user);
-					System.out.println("这是接收到的用户信息" + user);
-					System.out.println("返回值" + res);
-					// 注册成功
-					if (res == 1) {
-						map.put("ins_cg", "zcok");
-						map.put("提示：", "注册成功");
-						// 注册失败
-					} else {
-						map.put("ins_cg", "zcno");
-						map.put("tishi", "注册失败");
-					}
-				} else {
-					map.put("ins_cg", "phoneok");
-					map.put("tishi", "手机号已存在");
-				}
-				return map;
-				// 短信验证码错误
-			} else {
-				System.out.println("验证码错误");
-				map.put("ins_cg", "yzmno");
-				map.put("tishi", "验证码错误");
+	public Map<String, String> insert(@RequestBody User users,HttpServletRequest request, HttpServletResponse response) {
+        Map<String, String> map = new HashMap<>();
+		System.out.println(users+"-=-=-=-=-=-=-=-=-================-=-==-=--==-=-=");
+		String user_name = users.getUser_name();
+		String user_pwd = users.getUser_pwd();
+		String user_phone = users.getUser_phone();
+		String user_yzm = users.getUser_yzm();
+        //判断手机号是否正确
+        if(users.getUser_phone().length()==11){
+            //查询是否有这个用户
+            User uuser = userService.selectOne(user_name);
 
-			}
-			// 用户名重复
-		} else {
-			map.put("ins_cg", "userno");
-			map.put("tishi", "用户名重复");
+            if (uuser == null) {
+                User user = new User();
+                user.setUser_name(user_name);
+                MD5 md5 = new MD5();
+                user.setUser_pwd(md5.getMD5ofStr(user_pwd));
+				user.setGroup_id(1);
+				user.setUser_nick_name("魔鬼");
+				user.setUser_reg_time(Tools.getTime());
+				user.setUser_portrait("http://q1bjiy8xr.bkt.clouddn.com/default_user.0.2.png");
+                user.setUser_phone(user_phone);
+                // 短信验证
+                HttpSession session = request.getSession();
+                String phone_yzm = (String) session.getAttribute("phone_yzm");
+                System.out.println("取到的验证码：" + phone_yzm);
+                // 验证码正确
+                if (true) {
+                    //if (user_yzm.equals(phone_yzm)) {
+                    System.out.println("验证码正确");
+                    User userp = userService.selectPhone(user_phone);
+                    if (userp == null) {
+                        int res = userService.insert(user);
+                        System.out.println("这是接收到的用户信息" + user);
+                        System.out.println("返回值" + res);
+                        // 注册成功
+                        if (res == 1) {
+                            map.put("ins_cg", "zcok");
+                            map.put("提示：", "注册成功");
+                            // 注册失败
+                        } else {
+                            map.put("ins_cg", "zcno");
+                            map.put("tishi", "注册失败");
+                        }
+                    } else {
+                        map.put("ins_cg", "phoneok");
+                        map.put("tishi", "手机号已存在");
+                    }
+                    return map;
+                    // 短信验证码错误
+                } else {
+                    System.out.println("验证码错误");
+                    map.put("ins_cg", "yzmno");
+                    map.put("tishi", "验证码错误");
 
-		}
+                }
+                // 用户名重复
+            } else {
+                map.put("ins_cg", "userno");
+                map.put("tishi", "用户名重复");
+            }
+        }else{
+            map.put("ins_cg", "zcno");
+            map.put("tishi", "注册失败");
+        }
+
 		return map;
 	}
 
@@ -155,8 +263,6 @@ public class UserController {
 		}
 		session.removeAttribute("phone_yzm");
 		session.setAttribute("phone_yzm", sjm);
-		// System.out.println(map.get("reason"));
-
 		return map;
 	}
 
@@ -182,29 +288,54 @@ public class UserController {
 		int res = userService.update(user);
 		return res;
 	}
+	@RequestMapping("/show")
+	@ResponseBody
+	public List<User> show() {
+		List<User> list = userService.selectAll(null);
+		return list;
+	}
 
 	/*
 	 * 用户名登录
 	 */
 	@RequestMapping("/login")
 	@ResponseBody
-	public Map<String, String> login(HttpServletRequest request, HttpServletResponse response) {
-		String user_name = request.getParameter("user_name");
-		String user_pwd = request.getParameter("user_pwd");
+	public Map<String, String> login(@RequestBody User loginuser) {
+		String user_name = loginuser.getUser_name();
+		String user_pwd = loginuser.getUser_pwd();
+		System.out.println(loginuser+"----------==================================");
 
-		// String nolog = request.getParameter("nolog");
 		Map<String, String> map = new HashMap<>();
 		MD5 md5 = new MD5();
 		user_pwd = md5.getMD5ofStr(user_pwd);
+		//查询是否有这个用户
+		User uuser = userService.selectOne(user_name);
+		if(uuser!=null){
 
-		User user = userService.selectDl(user_name, user_pwd);
-		if (user != null) {
-			map.put("dlyz", "ok");
-			map.put("tishi", "登陆成功");
-		} else {
-			map.put("dlyz", "no");
-			map.put("tishi", "登陆失败");
+            //shiro
+            try {
+                Subject subject = SecurityUtils.getSubject();
+                UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user_name, user_pwd);
+                subject.login(usernamePasswordToken);
+                //登陆成功
+                if(subject.isAuthenticated()){
+                    map.put("dlyz", "ok");
+                    map.put("tishi", "登陆成功");
+                }
+            }catch (Exception e){
+                System.out.println("登陆失败");
+                map.put("dlyz", "no");
+                map.put("tishi", "登陆失败");
+
+                System.out.println(e.getMessage());
+            }
+
+		}else{
+			map.put("dlyz", "userno");
+			map.put("tishi", "此用户不存在");
 		}
+		//密码验证
+
 		return map;
 
 	}
@@ -214,9 +345,9 @@ public class UserController {
 	 */
 	@RequestMapping("/logintel")
 	@ResponseBody
-	public Map<String, String> logintel(HttpServletRequest request, HttpServletResponse response) {
-		String user_phone = request.getParameter("user_phone");
-		String user_yzm = request.getParameter("user_yzm");
+	public Map<String, String> logintel(@RequestBody User users, HttpServletRequest request, HttpServletResponse response) {
+		String user_phone = users.getUser_phone();
+		String user_yzm = users.getUser_yzm();
 		System.out.println("手机号：" + user_phone);
 		System.out.println("接收的验证码：" + user_yzm);
 		Map<String, String> map = new HashMap<>();
@@ -224,29 +355,45 @@ public class UserController {
 		String phone_yzm = (String) session.getAttribute("phone_yzm");
 		System.out.println("取到的验证码：" + phone_yzm);
 		// 判断手机号是否存在
-		// if (user != null) {
-		// 验证码正确
-		if (user_yzm.equals(phone_yzm)) {
-			System.out.println("号登陆");
-			User user = userService.selectPhone(user_phone);
-			System.out.println(user + "----");
-			if (user != null) {
+		User user = userService.selectPhone(user_phone);
+		if (user != null) {
+			//if (user_yzm.equals(phone_yzm)) {
+			if (true) {
+                //shiro
+                try {
+                    Subject subject = SecurityUtils.getSubject();
+                    UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUser_name(), user.getUser_pwd());
+                    subject.login(usernamePasswordToken);
+                    //登陆成功
+                    if(subject.isAuthenticated()){
+                        map.put("dlyz", "ok");
+                        map.put("tishi", "登陆成功");
+                    }
+                }catch (Exception e){
+                    System.out.println("登陆失败");
+                    map.put("dlyz", "no");
+                    map.put("tishi", "登陆失败");
+
+                    System.out.println(e.getMessage());
+                }
+                System.out.println(user + "----");
 				map.put("fh_cg", "yzmnok");
 				map.put("tishi", "验证码正确");
 			} else {
-				map.put("fh_cg", "nophone");
+				System.out.println("cuowu..................");
+				map.put("fh_cg", "yzmno");
+				map.put("tishi", "验证码错误");
 			}
-			return map;
 		} else {
-			System.out.println("cuowu..................");
-			map.put("fh_cg", "yzmno");
-			map.put("tishi", "验证码错误");
-			return map;
+			map.put("fh_cg", "nophone");
+			map.put("tishi", "手机号不存在");
 		}
+		return map;
+		// if (user != null) {
+		// 验证码正确
+
 		/*
-		 * } else { map.put("fh_cg", "nophone"); map.put("tishi", "此手机号未注册"); }
 		 */
-		// return map;
 
 		/*
 		 * String nolog = request.getParameter("nolog"); User user = new User();
@@ -265,27 +412,40 @@ public class UserController {
 	}
 
 	/*
-	 * 找回密码 修改密码
+	 * 找回密码 修改密码==》三
 	 */
-	@RequestMapping("/zhaohpwd")
-	public Map<String, String> zhaohpwd(HttpServletRequest request) {
-		String user_name = request.getParameter("user_name");
-		String user_id = request.getParameter("user_id");
-		String user_pwd = request.getParameter("user_pwd");
+	@RequestMapping("/updatepwd")
+	public Map<String, String> zhaohpwd(@RequestBody User users,HttpServletRequest request) {
 		Map<String, String> map = new HashMap<>();
-		User user = new User();
-		user.setUser_id(Integer.valueOf(user_id));
-		user.setUser_name(user_name);
-		MD5 md5 = new MD5();
-		user_pwd = md5.getMD5ofStr(user_pwd);
-		user.setUser_pwd(user_pwd);
-		int res = userService.update(user);
-		if (res == 1) {
-			map.put("fanhui", "ok");
-			map.put("tishi", "修改成功");
-		} else {
-			map.put("fanhui", "no");
-			map.put("tishi", "修改失败");
+		//判断手机号是否存在
+		User userphone = userService.selectPhone(users.getUser_phone());
+		if(userphone!=null){
+            //判断验证码是否正确
+            HttpSession session = request.getSession();
+            String phone_yzm = (String) session.getAttribute("phone_yzm");
+            // 验证成功
+            //if (users.getUser_yzm().equals(phone_yzm)) {
+            if (true) {
+                MD5 md5 = new MD5();
+                String user_pwd = md5.getMD5ofStr(users.getUser_pwd());
+                users.setUser_id(userphone.getUser_id());
+
+                users.setUser_pwd(user_pwd);
+                int res = userService.update(users);
+                if (res == 1) {
+                    map.put("fanui", "ok");
+                    map.put("tishi", "修改成功");
+                } else {
+                    map.put("fanui", "no");
+                    map.put("tishi", "修改失败");
+                }
+            } else {
+                map.put("fanui", "yzmno");
+                map.put("tishi", "验证码错误");
+            }
+		}else{
+			map.put("fanui", "phoneno");
+			map.put("tishi", "此手机号未注册");
 		}
 		return map;
 	}
@@ -294,22 +454,32 @@ public class UserController {
 	 * 找回密码 手机号查询用户名,返回用户名
 	 */
 	@RequestMapping("/sel_phone")
-	public Map<String, String> sel_phone(HttpServletRequest request) {
-		String user_phone = request.getParameter("user_phone");
-		String user_yzm = request.getParameter("user_yzm");
+	public Map<String, String> sel_phone(@RequestBody User users, HttpServletRequest request) {
+		String user_phone =users.getUser_phone();
+		String user_yzm = users.getUser_yzm();
 		HttpSession session = request.getSession();
 		String phone_yzm = (String) session.getAttribute("phone_yzm");
 		Map<String, String> map = new HashMap<>();
-		// 验证成功
-		if (user_yzm.equals(phone_yzm)) {
-			User user = userService.selectPhone(user_phone);
-			map.put("user_name", user.getUser_name());
-			map.put("user_id", String.valueOf(user.getUser_id()));
-			map.put("tishi", "yzmok");
-		} else {
-			map.put("tishi", "yzmno");
-			map.put("fh_cg", "验证码错误");
+		//判断手机号是否存在
+		User userphone = userService.selectPhone(user_phone);
+		if(userphone!=null){
+			// 验证成功
+			if (user_yzm.equals(phone_yzm)) {
+				User user = userService.selectPhone(user_phone);
+				map.put("user_name", user.getUser_name());
+				map.put("user_id", String.valueOf(user.getUser_id()));
+				map.put("tishi", "yzmok");
+				map.put("user_name",userphone.getUser_name());
+			} else {
+				map.put("tishi", "yzmno");
+				map.put("fh_cg", "验证码错误");
+			}
+		}else{
+			map.put("tishi", "phoneno");
+			map.put("fh_cg", "此手机号未注册");
 		}
+
+
 		return map;
 	}
 

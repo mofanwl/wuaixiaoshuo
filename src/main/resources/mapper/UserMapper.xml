@@ -6,6 +6,18 @@
 	<resultMap type="User" id="baseResultUser">
 
 	</resultMap>
+	<!--id查询user-->
+	<select id="selectUserById" parameterType="int" resultMap="baseResultUser">
+		select * from wn_user where user_id=#{user_id}
+	</select>
+	<!--加入会员到期时间-->
+	<update id="insertVipTime" parameterType="User" >
+		update wn_user set user_vip_time=#{user_vip_time} where user_id=#{user_id}
+	</update>
+	<!--查询会员到期时间-->
+	<select id="selByVipTime" parameterType="int" resultType="String">
+		select user_vip_time from wn_user where user_id=#{user_id}
+	</select>
 	<!-- 删 -->
 	<delete id="del" parameterType="int">
 		delete from wn_user where
@@ -14,7 +26,7 @@
 	<!-- 分页查询 -->
 	<select id="selectAllUser" resultMap="baseResultUser"
 		parameterType="map">
-		select* from wn_user limit #{start},#{end}
+		select * from wn_user limit #{start},#{end}
 
 	</select>
 	<!-- 手机号查询 -->
@@ -29,7 +41,7 @@
 	</select>
 	<!-- 查询一个 -->
 	<select id="selectOne" resultMap="baseResultUser">
-		select * from mac_user where
+		select * from wn_user where
 		user_name=#{user_name}
 	</select>
 
@@ -455,6 +467,9 @@
 			<if test="user_portrait!=null">
 				user_portrait=#{user_portrait},
 			</if>
+			<if test="user_total_mount!=null">
+				user_total_mount=#{user_total_mount},
+			</if>
 			<if test="user_portrait_thumb!=null">
 				user_portrait_thumb=#{user_portrait_thumb},
 			</if>
@@ -521,7 +536,9 @@
 
 	</update>
 	<!-- 查询总行数 -->
-	<resultMap type="int" id="selcount"></resultMap>
+	<resultMap type="int" id="selcount">
+
+	</resultMap>
 	<select id="selectCount" resultMap="selcount" parameterType="User">
 		select count(*) from wn_user
 		<where>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wn.dao.CollectDao">
+    <resultMap type="Collect" id="baseResultCollect">
+
+    </resultMap>
+    <!--用户加入收藏-->
+    <insert id="insUserOne" parameterType="Collect">
+        insert into wn_collect(collect_uid,collect_bid) VALUES (#{collect_uid},#{collect_bid})
+    </insert>
+    <!--用户收藏查询-->
+    <select id="selListByuser" parameterType="int" resultMap="baseResultCollect">
+        select * from wn_collect where collect_uid=#{user_id}
+    </select>
+
+
+</mapper>

@@ -8,6 +8,18 @@ import java.util.Map;
 
 public interface UserService {
 	/*
+ * id查询一个用户
+ */
+	public User selectUserById(Integer user_id);
+	/*
+加入会员时间
+ */
+	public int insertVipTime(User user);
+	/*
+    查询会员到期时间
+   */
+	public String selByVipTime(Integer user_id);
+	/*
 	 * 手机号查询
 	 */
 	public User selectPhone(String user_phone);

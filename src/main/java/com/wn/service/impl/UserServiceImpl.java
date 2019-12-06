@@ -57,6 +57,21 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public User selectUserById(Integer user_id) {
+		return udao.selectUserById(user_id);
+	}
+
+	@Override
+	public int insertVipTime(User user) {
+		return udao.insertVipTime(user);
+	}
+
+	@Override
+	public String selByVipTime(Integer user_id) {
+		return udao.selByVipTime(user_id);
+	}
+
+	@Override
 	public User selectPhone(String user_phone) {
 		return udao.selectPhone(user_phone);
 	}
