@@ -6,6 +6,12 @@ spring:
     url: jdbc:mysql://wn.mofan.la:3306/woniuxs?useUnicode=true&characterEncoding=utf8&useSSL=false
     username: woniuxs
     password: hbyacKMkxcid4kLX
+  jpa:
+    database: MYSQL
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.wn.pojo

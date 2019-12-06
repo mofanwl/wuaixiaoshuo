@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wn.dao.BtypeDao">
+
+    <!--查询小说类别-->
+    <select id="selectBookType" resultType="com.wn.pojo.Btype">
+        select type_id,type_name,type_img,type_col from wn_book_type
+    </select>
+
+    <!--查询所有小说-->
+    <select id="selectAll" resultType="com.wn.pojo.Books">
+        select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id
+    </select>
+
+    <!--查询免费小说-->
+    <select id="selectAllMoney" resultType="com.wn.pojo.Books">
+        select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id and b.books_vip = 1
+    </select>
+
+    <!--根据小说类型查询小说-->
+    <select id="selectAllByType" resultType="com.wn.pojo.Books" parameterType="int">
+        select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id and b.books_type = #{books_type}
+    </select>
+
+    <!--模糊查询查询小说-->
+    <select id="selectAllByName" resultType="com.wn.pojo.Books" parameterType="string">
+        select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id and b.books_name like concat('%',#{books_name},'%')
+    </select>
+
+
+
+</mapper>
