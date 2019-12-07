@@ -13,16 +13,22 @@ public class Books {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer books_id;
     private String books_name;
-    private Integer books_vip;
+    @Column(name = "books_vip")
+    private Integer booksVip;
     private String books_pic;
-    private Integer books_type;
+    @Column(name = "books_type")
+    private Integer booksType;
     private String books_url;
-    private Integer books_status;
+    @Column(name = "books_status")
+    private Integer booksStatus;
     private String books_author;
     private String books_describe;
     private String books_count;
+    @Transient
     private String vip_name;
+    @Transient
     private String status_name;
+    @Transient
     private String type_name;
 
 

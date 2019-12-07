@@ -1,8 +1,6 @@
 package com.wn.service;
 
-import com.wn.pojo.Books;
-import com.wn.pojo.BooksPage;
-import com.wn.pojo.Btype;
+import com.wn.pojo.*;
 
 import java.util.List;
 
@@ -20,6 +18,20 @@ public interface BtypeService {
 
     BooksPage findAll(Integer page, Integer size);
 
+    BooksPage findAllByBooksType(Integer type, Integer page, Integer size);
 
+    Books selectAllById(Integer id);
+
+    List<Books> selectAllVIP();
+
+    List<Books> selectAllCount();
+
+    BooksPage findAllByBooksStatus(Integer status, Integer page, Integer size);
+
+    List<BookStatus> selectAllStatus();
+
+    List<BooksVip> selectAllBookVip();
+
+    BooksPage findAllByBooksVip(Integer vip, Integer page, Integer size);
 
 }

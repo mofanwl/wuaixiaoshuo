@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class BooksPage {
+public class BooksPage<T> {
 
-    private List<Books> list;
+    private List<T> list;
     private Integer page;
     private Long total;
 

@@ -4,29 +4,73 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wn.dao.BtypeDao">
 
+
+    <resultMap id="Baseresult" type="com.wn.pojo.Books">
+        <id column="books_id" property="books_id"></id>
+        <result column="books_name" property="books_name"></result>
+        <result column="books_vip" property="booksVip"></result>
+        <result column="books_pic" property="books_pic"></result>
+        <result column="books_type" property="booksType"></result>
+        <result column="books_url" property="books_url"></result>
+        <result column="books_status" property="booksStatus"></result>
+        <result column="books_author" property="books_author"></result>
+        <result column="books_describe" property="books_describe"></result>
+        <result column="books_count" property="books_count"></result>
+        <result column="vip_name" property="vip_name"></result>
+        <result column="status_name" property="status_name"></result>
+        <result column="type_name" property="type_name"></result>
+    </resultMap>
+
+
     <!--查询小说类别-->
     <select id="selectBookType" resultType="com.wn.pojo.Btype">
         select type_id,type_name,type_img,type_col from wn_book_type
     </select>
 
     <!--查询所有小说-->
-    <select id="selectAll" resultType="com.wn.pojo.Books">
+    <select id="selectAll" resultMap="Baseresult">
         select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id
     </select>
 
     <!--查询免费小说-->
-    <select id="selectAllMoney" resultType="com.wn.pojo.Books">
+    <select id="selectAllMoney" resultMap="Baseresult">
         select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id and b.books_vip = 1
     </select>
 
+
+    <!--查询VIP小说-->
+    <select id="selectAllVIP" resultMap="Baseresult">
+        select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id and b.books_vip = 2
+    </select>
+
     <!--根据小说类型查询小说-->
-    <select id="selectAllByType" resultType="com.wn.pojo.Books" parameterType="int">
+    <select id="selectAllByType" resultMap="Baseresult" parameterType="int">
         select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id and b.books_type = #{books_type}
     </select>
 
     <!--模糊查询查询小说-->
-    <select id="selectAllByName" resultType="com.wn.pojo.Books" parameterType="string">
+    <select id="selectAllByName" resultMap="Baseresult" parameterType="string">
         select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id and b.books_name like concat('%',#{books_name},'%')
+    </select>
+
+    <!--根据小说ID查询小说-->
+    <select id="selectAllById" resultMap="Baseresult" parameterType="int">
+        select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id and b.books_id = #{books_id}
+    </select>
+
+    <!--查询所有小说(10)-->
+    <select id="selectAllCount" resultMap="Baseresult">
+        select b.books_id,b.books_name,b.books_author,b.books_describe,b.books_count,b.books_pic,books_type,b.books_url,b.books_vip,b.books_status,v.vip_name,s.status_name,t.type_name from wn_books b,wn_book_vip v,wn_book_status s,wn_book_type t where b.books_vip = v.vip_id and b.books_status = s.status_id and b.books_type = t.type_id limit 1,10
+    </select>
+
+    <!--查询小说状态-->
+    <select id="selectAllStatus" resultType="com.wn.pojo.BookStatus">
+        select * from wn_book_status
+    </select>
+
+    <!--查询小说收费-->
+    <select id="selectAllBookVip" resultType="com.wn.pojo.BooksVip">
+        select * from wn_book_vip
     </select>
 
 

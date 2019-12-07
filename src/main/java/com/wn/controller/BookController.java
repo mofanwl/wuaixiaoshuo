@@ -1,8 +1,6 @@
 package com.wn.controller;
 
-import com.wn.pojo.Books;
-import com.wn.pojo.BooksPage;
-import com.wn.pojo.Btype;
+import com.wn.pojo.*;
 import com.wn.service.BtypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +53,51 @@ public class BookController {
     @RequestMapping("findAll/{page}/{size}")
     public BooksPage findAll(@PathVariable("page") Integer page , @PathVariable("size") Integer size){
         BooksPage list = btypeService.findAll(page,size);
+        return list;
+    }
+
+    @RequestMapping("findAllByBooksType/{type}/{page}/{size}")
+    public BooksPage findAllByBooksType(@PathVariable("type") Integer type,@PathVariable("page") Integer page , @PathVariable("size") Integer size){
+        BooksPage list = btypeService.findAllByBooksType(type, page, size);
+        return list;
+    }
+
+    @RequestMapping("/selectAllById/{id}")
+    public Books selectAllById(@PathVariable("id") Integer id){
+        return btypeService.selectAllById(id);
+    }
+
+    @RequestMapping("/selectAllVIP")
+    public List<Books> selectAllVIP(){
+        return btypeService.selectAllVIP();
+    }
+
+    @RequestMapping("/selectAllCount")
+    public List<Books> selectAllCount(){
+        return btypeService.selectAllCount();
+    }
+
+
+    @RequestMapping("/selectAllStatus")
+    public List<BookStatus> selectAllStatus(){
+        return btypeService.selectAllStatus();
+    }
+
+    @RequestMapping("/selectAllBookVip")
+    public List<BooksVip> selectAllBookVip(){
+        return btypeService.selectAllBookVip();
+    }
+
+
+    @RequestMapping("findAllByBooksStatus/{status}/{page}/{size}")
+    public BooksPage findAllByBooksStatus(@PathVariable("status") Integer status,@PathVariable("page") Integer page , @PathVariable("size") Integer size){
+        BooksPage list = btypeService.findAllByBooksStatus(status, page, size);
+        return list;
+    }
+
+    @RequestMapping("findAllByBooksVip/{vip}/{page}/{size}")
+    public BooksPage findAllByBooksVip(@PathVariable("vip") Integer vip,@PathVariable("page") Integer page , @PathVariable("size") Integer size){
+        BooksPage list = btypeService.findAllByBooksVip(vip, page, size);
         return list;
     }
 
