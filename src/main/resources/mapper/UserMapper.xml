@@ -494,6 +494,9 @@
 			<if test="user_reg_time!=null">
 				user_reg_time=#{user_reg_time},
 			</if>
+			<if test="user_vip_time!=null">
+				user_vip_time=#{user_vip_time},
+			</if>
 			<if test="user_reg_ip!=null">
 				user_reg_ip=#{user_reg_ip},
 			</if>

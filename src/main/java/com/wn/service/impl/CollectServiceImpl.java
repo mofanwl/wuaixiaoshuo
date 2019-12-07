@@ -25,4 +25,9 @@ public class CollectServiceImpl implements CollectService {
     public List<Collect> selListByuser(Integer user_id) {
         return collectDao.selListByuser(user_id);
     }
+
+    @Override
+    public int delByBid(Integer collect_bid) {
+        return collectDao.delByBid(collect_bid);
+    }
 }

@@ -16,4 +16,8 @@ public interface CollectService {
     用户收藏查询
      */
     List<Collect> selListByuser(Integer user_id);
+    /*
+用户的收藏删除
+ */
+    int delByBid(Integer collect_bid);
 }

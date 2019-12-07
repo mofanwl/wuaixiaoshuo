@@ -30,6 +30,7 @@ public class OrderPayController {
         List<OrderPay> orderPays = orderPayService.selAdminListOrderPay();
         PageInfo pageInfo = new PageInfo<>(orderPays);
         long total = pageInfo.getTotal();
+
         System.out.println(total);
         return pageInfo;
     }

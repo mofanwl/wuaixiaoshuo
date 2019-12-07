@@ -1,9 +1,13 @@
 package com.wn.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.wn.pojo.Collect;
+import com.wn.pojo.Msg;
 import com.wn.service.impl.CollectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,11 +46,33 @@ public class CollectController {
     /*
     用户收藏查询
      */
-    @RequestMapping("/selListByuser")
-    public List<Collect> selListByuser(@RequestParam("user_id")Integer user_id){
-        System.out.println(user_id);
+    @RequestMapping("/selListByuser/{user_id}/{page}/{size}")
+    public Msg<Collect> selListByuser(@PathVariable("user_id")Integer user_id,@PathVariable("page")Integer page,@PathVariable("size")Integer size){
+        Msg<Collect> msg = new Msg<>();
+        
+        PageHelper.startPage(page,size);
         List<Collect> collects = collectService.selListByuser(user_id);
-        return collects;
+        PageInfo<Collect> collectPageInfo = new PageInfo<>(collects);
+        msg.setTotal(collectPageInfo.getTotal());
+        msg.setList(collects);
+        System.out.println(user_id);
+
+        return msg;
     }
+   /*
+    用户的收藏删除
+     */
+   @RequestMapping("/delByBid")
+   public Map<String,String> delByBid(@RequestParam("collect_bid")Integer collect_bid){
+       Map<String,String> map=new HashMap<>();
+       int i = collectService.delByBid(collect_bid);
+       if(i==1){
+           map.put("msg","ok");
+       }else {
+           map.put("msg","no");
+       }
+       return map;
+   }
+
 
 }

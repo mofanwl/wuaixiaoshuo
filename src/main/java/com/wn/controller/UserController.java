@@ -3,6 +3,7 @@ package com.wn.controller;
 import com.google.gson.Gson;
 import com.wn.pojo.Port;
 import com.wn.pojo.User;
+import com.wn.pojo.cookie;
 import com.wn.service.UserService;
 import com.wn.utils.MD5;
 import com.wn.utils.Shortt;
@@ -46,9 +47,10 @@ public class UserController {
 	/*
 	vip充值
 	 */
-	@RequestMapping("/tovip")
-	public Map<String,String> tovip(@RequestParam("user_id")Integer user_id,@RequestParam("mount") Float mount){
+	@RequestMapping("/tovip/{user_id}/{mount}")
+	public Map<String,String> tovip(@PathVariable("user_id")Integer user_id,@PathVariable("mount") Float mount){
 		Map<String,String> map=new HashMap<>();
+		map.put("msg","no");
 		//查询余额
 		User user = userService.selectUserById(user_id);
 		String user_total_mount = user.getUser_total_mount();
@@ -57,14 +59,25 @@ public class UserController {
 			User user1 = new User();
 			user1.setUser_id(user_id);
 			user1.setUser_total_mount(String.valueOf(Float.valueOf(user_total_mount)-mount));
-
-			int update = userService.update(user1);
-			if(update==1){
-				System.out.println("会员充值成功");
-				map.put("msg","ok");
-			}else {
-				System.out.println("会员充值失败");
-				map.put("msg","no");
+			//查询用户是否为VIp
+			String aLong = userService.selByVipTime(15);
+			System.out.println(aLong);
+			String vip = Tools.getVip(aLong);
+			if(vip.equals("vip")){
+				user1.setUser_vip_time(String.valueOf(Tools.toVip2(3,aLong)));
+				int update = userService.update(user1);
+				if(update==1){
+					System.out.println("会员充值成功");
+					map.put("msg","ok");
+				}
+			}else{
+				//时间
+				user1.setUser_vip_time(String.valueOf(Tools.toVip(3)));
+				int update = userService.update(user1);
+				if(update==1){
+					System.out.println("会员充值成功");
+					map.put("msg","ok");
+				}
 			}
 		}else{
 			map.put("msg","mountno");
@@ -119,14 +132,15 @@ public class UserController {
         userService.insertVipTime(user);*/
 
         //查询用户是否为VIp
-        String aLong = userService.selByVipTime(11);
-        String vip = Tools.getVip(aLong);
+        String aLong = userService.selByVipTime(15);
+		System.out.println(aLong);
+		String vip = Tools.getVip(aLong);
         System.out.println(vip);
 		map.put("vip",vip);
 
 
         //查询用户到期时间
-        String aLong1 = userService.selByVipTime(11);
+        String aLong1 = userService.selByVipTime(15);
          String time = Tools.getVipTime(aLong1);
 		map.put("viptime",time);
 
@@ -300,7 +314,9 @@ public class UserController {
 	 */
 	@RequestMapping("/login")
 	@ResponseBody
-	public Map<String, String> login(@RequestBody User loginuser) {
+	public cookie login(@RequestBody User loginuser) {
+		cookie cookies = new cookie();
+		cookies.setLogin("loginno");
 		String user_name = loginuser.getUser_name();
 		String user_pwd = loginuser.getUser_pwd();
 		System.out.println(loginuser+"----------==================================");
@@ -319,24 +335,26 @@ public class UserController {
                 subject.login(usernamePasswordToken);
                 //登陆成功
                 if(subject.isAuthenticated()){
-                    map.put("dlyz", "ok");
-                    map.put("tishi", "登陆成功");
+					cookies.setTishi("登陆成功");
+					cookies.setDlyz("ok");
+					cookies.setLogin("loginyes");
+					String aLong = userService.selByVipTime(uuser.getUser_id());
+					cookies.setVip( Tools.getVip(aLong));
                 }
             }catch (Exception e){
+				cookies.setTishi("登陆失败");
+				cookies.setDlyz("no");
                 System.out.println("登陆失败");
-                map.put("dlyz", "no");
-                map.put("tishi", "登陆失败");
-
                 System.out.println(e.getMessage());
             }
 
 		}else{
-			map.put("dlyz", "userno");
-			map.put("tishi", "此用户不存在");
+			cookies.setTishi("此用户不存在");
+			cookies.setDlyz("userno");
 		}
 		//密码验证
 
-		return map;
+		return cookies;
 
 	}
 
@@ -345,7 +363,9 @@ public class UserController {
 	 */
 	@RequestMapping("/logintel")
 	@ResponseBody
-	public Map<String, String> logintel(@RequestBody User users, HttpServletRequest request, HttpServletResponse response) {
+	public cookie logintel(@RequestBody User users, HttpServletRequest request, HttpServletResponse response) {
+		cookie cookies = new cookie();
+		cookies.setLogin("loginno");
 		String user_phone = users.getUser_phone();
 		String user_yzm = users.getUser_yzm();
 		System.out.println("手机号：" + user_phone);
@@ -359,36 +379,26 @@ public class UserController {
 		if (user != null) {
 			//if (user_yzm.equals(phone_yzm)) {
 			if (true) {
-                //shiro
-                try {
-                    Subject subject = SecurityUtils.getSubject();
-                    UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUser_name(), user.getUser_pwd());
-                    subject.login(usernamePasswordToken);
-                    //登陆成功
-                    if(subject.isAuthenticated()){
-                        map.put("dlyz", "ok");
-                        map.put("tishi", "登陆成功");
-                    }
-                }catch (Exception e){
-                    System.out.println("登陆失败");
-                    map.put("dlyz", "no");
-                    map.put("tishi", "登陆失败");
-
-                    System.out.println(e.getMessage());
-                }
-                System.out.println(user + "----");
-				map.put("fh_cg", "yzmnok");
-				map.put("tishi", "验证码正确");
+				cookies.setTishi("登陆成功");
+				cookies.setLogin("loginyes");
+				String aLong = userService.selByVipTime(user.getUser_id());
+				cookies.setVip( Tools.getVip(aLong));
+				cookies.setDlyz("yzmnok");
+				cookies.setTishi("验证码正确");
 			} else {
 				System.out.println("cuowu..................");
 				map.put("fh_cg", "yzmno");
 				map.put("tishi", "验证码错误");
+				cookies.setDlyz("yzmno");
+				cookies.setTishi("验证码错误");
 			}
 		} else {
 			map.put("fh_cg", "nophone");
 			map.put("tishi", "手机号不存在");
+			cookies.setDlyz("nophone");
+			cookies.setTishi("手机号不存在");
 		}
-		return map;
+		return cookies;
 		// if (user != null) {
 		// 验证码正确
 

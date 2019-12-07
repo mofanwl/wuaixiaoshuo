@@ -50,14 +50,14 @@ public class alipayCallback {
             //修改状态
             int res = orderPayService.updateStateAndTotal("支付成功", total_amount_1, out_trade_no_1,new Date());
             if(res==1){
-                System.out.println("数据库支付成功");
+                //System.out.println("数据库支付成功");
                 //写入用户余额
                 OrderPay orderPay1 = orderPayService.selUserIdByTrade(out_trade_no_1);
-                System.out.println(orderPay1+"这是根据out_trade_no查询 的ouderpay1");
+                //System.out.println(orderPay1+"这是根据out_trade_no查询 的ouderpay1");
                 orderPay1.getUser_id();
                 //id查询user
                 User user1 = userService.selectUserById(orderPay1.getUser_id());
-                System.out.println("id查询user_id:"+user1+"----------------------------====================");
+               // System.out.println("id查询user_id:"+user1+"----------------------------====================");
                 User user = new User();
                 user.setUser_id(orderPay1.getUser_id());
                 user.setUser_total_mount(String.valueOf(Float.valueOf(user1.getUser_total_mount())+Float.valueOf(orderPay1.getTotal_amount_1())));
@@ -66,15 +66,15 @@ public class alipayCallback {
                     return "payok";
                 }
             }else {
-                System.out.println("写入支付失败");
+                //System.out.println("写入支付失败");
             }
         }else {
             //修改状态
             int res = orderPayService.updateStateAndTotal("支付金额不符", total_amount_1, out_trade_no_1,new Date());
             if(res==1){
-                System.out.println("数据库支付成功2");
+               // System.out.println("数据库支付成功2");
             }else {
-                System.out.println("写入支付失败2");
+               // System.out.println("写入支付失败2");
             }
         }
         //System.out.println(params+"alipay=============================================================-------------------alipay回调");

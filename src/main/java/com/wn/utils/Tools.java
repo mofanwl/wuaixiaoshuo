@@ -33,8 +33,20 @@ public class Tools {
         Long TIME_YT=86400000L;
         TIME_YT=TIME_YT * day;
         long times = System.currentTimeMillis()+TIME_YT;
+       // String result = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(times));
+        //System.out.println("这是会员到期时间Tools:"+result);
         return String.valueOf(times);
     }
+    public static String toVip2(Integer day,String timevip){
+        Long TIME_YT=86400000L;
+        TIME_YT=TIME_YT * day;
+        long times = Long.valueOf(timevip)+TIME_YT;
+       // String result = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(times));
+        //System.out.println("这是会员到期时间Tools:"+result);
+        return String.valueOf(times);
+    }
+
+
     public static String getVipTime(String time){
         Long timess=Long.valueOf(time);
         String result = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timess));

@@ -6,13 +6,25 @@
     <resultMap type="Collect" id="baseResultCollect">
 
     </resultMap>
+    <!-- 用户的收藏删除-->
+    <delete id="delByBid" parameterType="int">
+        DELETE from wn_collect where collect_bid=#{collect_bid}
+    </delete>
     <!--用户加入收藏-->
     <insert id="insUserOne" parameterType="Collect">
         insert into wn_collect(collect_uid,collect_bid) VALUES (#{collect_uid},#{collect_bid})
     </insert>
     <!--用户收藏查询-->
     <select id="selListByuser" parameterType="int" resultMap="baseResultCollect">
-        select * from wn_collect where collect_uid=#{user_id}
+    select * from
+    wn_collect wc,
+    wn_books wb,
+    wn_book_vip wbv,
+    wn_book_type wbt where
+    wc.collect_bid=wb.books_id and
+    wb.books_type=wbt.type_id and
+    wbv.vip_id=wb.books_vip and
+    wc.collect_uid=#{user_id}
     </select>
 
 

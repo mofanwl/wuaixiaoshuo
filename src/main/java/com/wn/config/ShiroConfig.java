@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ShiroConfig {
 
-    @Bean
+/*    @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(@Qualifier("defaultWebSecurityManager")DefaultWebSecurityManager defaultWebSecurityManager){
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(defaultWebSecurityManager);
@@ -33,7 +33,7 @@ public class ShiroConfig {
     public MyRealm myRealm(){
         MyRealm myRealm = new MyRealm();
         return myRealm;
-    }
+    }*/
 
 
 
@@ -42,19 +42,19 @@ public class ShiroConfig {
      * 需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证
      * 配置以下两个bean(DefaultAdvisorAutoProxyCreator和AuthorizationAttributeSourceAdvisor)
      */
-    @Bean
+    /*@Bean
     public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator(){
         DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();
         advisorAutoProxyCreator.setProxyTargetClass(true);
         return advisorAutoProxyCreator;
     }
-    /**
+    *//**
      * 开启aop注解支持
-     */
+     *//*
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(DefaultWebSecurityManager defaultWebSecurityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(defaultWebSecurityManager);
         return authorizationAttributeSourceAdvisor;
-    }
+    }*/
 }
