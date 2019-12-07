@@ -187,7 +187,7 @@
 	</insert>
 	<!-- 删 -->
 	<delete id="delete" parameterType="map">
-		delete from mac_admin where admin_id in
+		delete from wn_admin where admin_id in
 
 		<foreach item="a" collection="enos" open="(" separator=","
 			close=")">
@@ -196,7 +196,7 @@
 	</delete>
 	<!-- 改 -->
 	<update id="update" parameterType="Admin">
-		update mac_admin
+		update wn_admin
 		<set>
 			<if test="admin_name != null">
 				admin_name=#{admin_name},
@@ -272,6 +272,157 @@
 			</if>
 		</where>
 	</select>
+
+
+	<!--
+		YC
+	-->
+	<!-- 查询 -->
+	<select id="selectAllC" resultMap="baseResultAdmin"
+			parameterType="Admin">
+		select * from wn_admin
+		<where>
+			<if test="admin_id != null">
+				admin_id=#{admin_id}
+			</if>
+			<if test="admin_name != null">
+				and admin_name=#{admin_name}
+			</if>
+			<if test="admin_pwd != null">
+				and admin_pwd=#{admin_pwd}
+			</if>
+			<if test="admin_random != null">
+				and admin_random=#{admin_random}
+			</if>
+
+			and admin_status=1
+
+			<if test="admin_auth != null">
+				and admin_auth=#{admin_auth}
+			</if>
+			<if test="admin_login_time != null">
+				and admin_login_time=#{admin_login_time}
+			</if>
+			<if test="admin_login_ip != null">
+				and admin_login_ip=#{admin_login_ip}
+			</if>
+			<if test="admin_login_num != null">
+				and admin_login_num=#{admin_login_num}
+			</if>
+			<if test="admin_last_login_time != null">
+				and admin_last_login_time=#{admin_last_login_time}
+			</if>
+			<if test="admin_last_login_ip != null">
+				and admin_last_login_ip=#{admin_last_login_ip}
+			</if>
+
+		</where>
+	</select>
+	<!-- 模糊查询 -->
+	<select id="selectLikeC" resultMap="baseResultAdmin"
+			parameterType="Admin">
+		select * from wn_admin
+		<where>
+			<if test="admin_id!=null">
+				admin_id like concat('%',#{admin_id},'%')
+			</if>
+			<if test="admin_name!= null">
+				and admin_name like concat('%',#{admin_name},'%')
+			</if>
+			<if test="admin_pwd!= null">
+				and admin_pwd like  concat('%',#{admin_pwd},'%')
+			</if>
+			<if test="admin_random!= null">
+				and admin_random like  concat('%',#{admin_random},'%')
+			</if>
+
+			and admin_status=1
+
+			<if test="admin_auth!= null">
+				and admin_auth like  concat('%',#{admin_auth},'%')
+			</if>
+			<if test="admin_login_time!= null">
+				and admin_login_time like  concat('%',#{admin_login_time},'%')
+			</if>
+			<if test="admin_login_ip!= null">
+				and admin_login_ip like  concat('%',#{admin_login_ip},'%')
+			</if>
+			<if test="admin_login_num!= null">
+				and admin_login_num like  concat('%',#{admin_login_num},'%')
+			</if>
+			<if test="admin_last_login_time!= null">
+				and admin_last_login_time like  concat('%',#{admin_last_login_time},'%')
+			</if>
+			<if test="admin_last_login_ip != null">
+				and admin_last_login_ip like  concat('%',#{admin_last_login_ip},'%')
+			</if>
+
+		</where>
+	</select>
+	<!-- 增，注册save -->
+	<insert id="insertRC" parameterType="Admin">
+		insert into wn_admin(admin_name,admin_pwd,admin_auth)
+		value
+		(#{admin_name},#{admin_pwd},#{admin_auth})
+	</insert>
+	<!-- 增save -->
+	<insert id="insertC" parameterType="Admin">
+		insert into wn_admin(admin_name,admin_pwd,admin_random,admin_status,admin_auth,admin_login_time,admin_login_ip,admin_login_num,admin_last_login_time,admin_last_login_ip)
+		value
+		(#{admin_name},#{admin_pwd},#{admin_random},#{admin_status},#{admin_auth},#{admin_login_time},#{admin_login_ip},#{admin_login_num},#{admin_last_login_time},#{admin_last_login_ip})
+
+	</insert>
+
+	<!-- 查询总行数 -->
+	<resultMap type="int" id="selectCount"></resultMap>
+	<select id="selectCountC" resultMap="selectCount" parameterType="Admin">
+		select count(*) from wn_admin
+		<where>
+			<if test="admin_id != null">
+				admin_id=#{admin_id}
+			</if>
+			<if test="admin_name != null">
+				and admin_name=#{admin_name}
+			</if>
+			<if test="admin_pwd != null">
+				and admin_pwd=#{admin_pwd}
+			</if>
+			<if test="admin_random != null">
+				and admin_random=#{admin_random}
+			</if>
+
+			and admin_status=1
+
+			<if test="admin_auth != null">
+				and admin_auth=#{admin_auth}
+			</if>
+			<if test="admin_login_time != null">
+				and admin_login_time=#{admin_login_time}
+			</if>
+			<if test="admin_login_ip != null">
+				and admin_login_ip=#{admin_login_ip}
+			</if>
+			<if test="admin_login_num != null">
+				and admin_login_num=#{admin_login_num}
+			</if>
+			<if test="admin_last_login_time != null">
+				and admin_last_login_time=#{admin_last_login_time}
+			</if>
+			<if test="admin_last_login_ip != null">
+				and admin_last_login_ip=#{admin_last_login_ip}
+			</if>
+		</where>
+	</select>
+	<!--分页查询-->
+	<select id="selectLimitC" parameterType="com.wn.pojo.Page" resultType="com.wn.pojo.Admin">
+		select * from wn_admin where admin_status=1 limit #{pageStart},#{pageSize}
+	</select>
+
+
+
+	<!--
+	YC
+	-->
 
 
 </mapper>

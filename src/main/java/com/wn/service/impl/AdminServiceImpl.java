@@ -2,6 +2,7 @@ package com.wn.service.impl;
 
 import com.wn.dao.AdminDao;
 import com.wn.pojo.Admin;
+import com.wn.pojo.Page;
 import com.wn.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,9 +45,43 @@ public class AdminServiceImpl implements AdminService {
 		return adao.selectCount(admin);
 	}
 
+
 	@Override
 	public Admin selLogin(String admin_name, Integer admin_pwd) {
 		return adao.selLogin(admin_name, admin_pwd);
 	}
+
+
+
+	/*
+    YC
+     */
+	@Override
+	public List<Admin> selectLikeC(Admin admin) {
+		return adao.selectLikeC(admin);
+	}
+	@Override
+	public List<Admin> selectAllC(Admin admin) {
+		return adao.selectAllC(admin);
+	}
+	@Override
+	public int insertC(Admin admin) {
+		return adao.insertC(admin);
+	}
+	@Override
+	public int selectCountC(Admin admin) {
+		return adao.selectCountC(admin);
+	}
+	@Override
+	public List<Admin> selectLimitC(Page p) {
+		return adao.selectLimitC(p);
+	}
+	@Override
+	public int insertRc(Admin admin) {
+		return adao.insertRc(admin);
+	}
+/*
+YC
+ */
 
 }

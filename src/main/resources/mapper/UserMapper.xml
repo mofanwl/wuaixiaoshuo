@@ -639,4 +639,218 @@
 	</select>
 
 
+	<!--
+    YC
+-->
+	<!--分页查询-->
+	<select id="selectLimitC" parameterType="com.wn.pojo.Page" resultType="com.wn.pojo.User">
+		select * from wn_user where user_status=0 limit #{pageStart},#{pageSize}
+	</select>
+	<!-- 模糊查询 -->
+	<select id="selectLikeC" resultMap="baseResultUser"
+			parameterType="User">
+		select * from wn_user
+		<where>
+			<if test="user_id!=null">
+				user_id like concat('%',#{user_id},'%')
+			</if>
+			<if test="group_id!=null">
+				and group_id like concat('%',#{group_id},'%')
+			</if>
+			<if test="user_name!=null">
+				and user_name like concat('%',#{user_name},'%')
+			</if>
+			<if test="user_pwd!=null">
+				and user_pwd like concat('%',#{user_pwd},'%')
+			</if>
+			<if test="user_nick_name!=null">
+				and user_nick_name like concat('%',#{user_nick_name},'%')
+			</if>
+			<if test="user_qq!=null">
+				and user_qq like concat('%',#{user_qq},'%')
+			</if>
+			<if test="user_email!=null">
+				and user_email like concat('%',#{user_email},'%')
+			</if>
+			<if test="user_phone!=null">
+				and user_phone like concat('%',#{user_phone},'%')
+			</if>
+
+			and user_status=0
+
+			<if test="user_portrait!=null">
+				and user_portrait like concat('%',#{user_portrait},'%')
+			</if>
+			<if test="user_portrait_thumb!=null">
+				and user_portrait_thumb like concat('%',#{user_portrait_thumb},'%')
+			</if>
+			<if test="user_openid_qq!=null">
+				and user_openid_qq like concat('%',#{user_openid_qq},'%')
+			</if>
+			<if test="user_id!=null">
+				and user_openid_weixin like concat('%',#{user_openid_weixin},'%')
+			</if>
+			<if test="user_question!=null">
+				and user_question like concat('%',#{user_question},'%')
+			</if>
+			<if test="user_answer!=null">
+				and user_answer like concat('%',#{user_answer},'%')
+			</if>
+			<if test="user_points!=null">
+				and user_points like concat('%',#{user_points},'%')
+			</if>
+			<if test="user_points_froze!=null">
+				and user_points_froze like concat('%',#{user_points_froze},'%')
+			</if>
+			<if test="user_reg_time!=null">
+				and user_reg_time like concat('%',#{user_reg_time},'%')
+			</if>
+			<if test="user_reg_ip!=null">
+				and user_reg_ip like concat('%',#{user_reg_ip},'%')
+			</if>
+			<if test="user_login_time!=null">
+				and user_login_time like concat('%',#{user_login_time},'%')
+			</if>
+			<if test="user_login_ip!=null">
+				and user_login_ip like concat('%',#{user_login_ip},'%')
+			</if>
+			<if test="user_last_login_time!=null">
+				and user_last_login_time like concat('%',#{user_last_login_time},'%')
+			</if>
+			<if test="user_last_login_ip!=null">
+				and user_last_login_ip like concat('%',#{user_last_login_ip},'%')
+			</if>
+			<if test="user_login_num!=null">
+				and user_login_num like concat('%',#{user_login_num},'%')
+			</if>
+			<if test="user_extend!=null">
+				and user_extend like concat('%',#{user_extend},'%')
+			</if>
+			<if test="user_random!=null">
+				and user_random like concat('%',#{user_random},'%')
+			</if>
+			<if test="user_end_time!=null">
+				and user_end_time like concat('%',#{user_end_time},'%')
+			</if>
+			<if test="user_pid!=null">
+				and user_pid like concat('%',#{user_pid},'%')
+			</if>
+			<if test="user_pid_2!=null">
+				and user_pid_2 like concat('%',#{user_pid_2},'%')
+			</if>
+			<if test="user_pid_3!=null">
+				and user_pid_3 like concat('%',#{user_pid_3},'%')
+			</if>
+
+		</where>
+	</select>
+	<!-- 增save -->
+	<insert id="insertC" parameterType="User">
+		insert into wn_user (user_id,user_name,user_pwd,user_nick_name,user_qq,user_email,user_phone,user_status,user_portrait)
+		values
+		(#{user_id},#{user_name},#{user_pwd},#{user_nick_name},#{user_qq},#{user_email},#{user_phone},#{user_status},#{user_portrait})
+	</insert>
+	<!-- 查询总行数 -->
+
+	<select id="selectCountC" resultMap="selcount" parameterType="User">
+		select count(*) from wn_user
+		<where>
+			<if test="user_id!=null">
+				user_id =#{user_id}
+			</if>
+			<if test="group_id!=null">
+				and group_id=#{group_id}
+			</if>
+			<if test="user_name!=null">
+				and user_name=#{user_name}
+			</if>
+			<if test="user_pwd!=null">
+				and user_pwd=#{user_pwd}
+			</if>
+			<if test="user_nick_name!=null">
+				and user_nick_name=#{user_nick_name}
+			</if>
+			<if test="user_qq!=null">
+				and user_qq=#{user_qq}
+			</if>
+			<if test="user_email!=null">
+				and user_email=#{user_email}
+			</if>
+			<if test="user_phone!=null">
+				and user_phone=#{user_phone}
+			</if>
+
+			and user_status=0
+
+			<if test="user_portrait!=null">
+				and user_portrait=#{user_portrait}
+			</if>
+			<if test="user_portrait_thumb!=null">
+				and user_portrait_thumb=#{user_portrait_thumb}
+			</if>
+			<if test="user_openid_qq!=null">
+				and user_openid_qq=#{user_openid_qq}
+			</if>
+			<if test="user_id!=null">
+				and user_openid_weixin=#{user_openid_weixin}
+			</if>
+			<if test="user_question!=null">
+				and user_question=#{user_question}
+			</if>
+			<if test="user_answer!=null">
+				and user_answer=#{user_answer}
+			</if>
+			<if test="user_points!=null">
+				and user_points=#{user_points}
+			</if>
+			<if test="user_points_froze!=null">
+				and user_points_froze=#{user_points_froze}
+			</if>
+			<if test="user_reg_time!=null">
+				and user_reg_time=#{user_reg_time}
+			</if>
+			<if test="user_reg_ip!=null">
+				and user_reg_ip=#{user_reg_ip}
+			</if>
+			<if test="user_login_time!=null">
+				and user_login_time=#{user_login_time}
+			</if>
+			<if test="user_login_ip!=null">
+				and user_login_ip=#{user_login_ip}
+			</if>
+			<if test="user_last_login_time!=null">
+				and user_last_login_time=#{user_last_login_time}
+			</if>
+			<if test="user_last_login_ip!=null">
+				and user_last_login_ip=#{user_last_login_ip}
+			</if>
+			<if test="user_login_num!=null">
+				and user_login_num=#{user_login_num}
+			</if>
+			<if test="user_extend!=null">
+				and user_extend=#{user_extend}
+			</if>
+			<if test="user_random!=null">
+				and user_random=#{user_random}
+			</if>
+			<if test="user_end_time!=null">
+				and user_end_time=#{user_end_time}
+			</if>
+			<if test="user_pid!=null">
+				and user_pid=#{user_pid}
+			</if>
+			<if test="user_pid_2!=null">
+				and user_pid_2=#{user_pid_2}
+			</if>
+			<if test="user_pid_3!=null">
+				and user_pid_3=#{user_pid_3}
+			</if>
+		</where>
+	</select>
+	<!--
+		YC
+	-->
+
+
+
 </mapper>

@@ -71,4 +71,33 @@
           insert into wn_order_pay(user_id,pay_id) values(#{user_id},#{pay_id})
     </insert>
 
+
+
+
+    <!--YC-->
+    <!--分页查询所有订单信息-->
+    <!-- 查询总行数 -->
+    <select id="selectCountC" resultType="int">
+                select count(*) from wn_pay
+            </select>
+
+    <!--分页查询-->
+    <select id="selectLimitC" parameterType="com.wn.pojo.Page" resultType="com.wn.pojo.OrderPay">
+                  select * from
+                    wn_pay wp,
+                    wn_order_pay wop WHERE
+                    wp.pay_id=wop.pay_id  limit #{pageStart},#{pageSize}
+            </select>
+    <!--通过user_id查询user_name-->
+    <select id="findInUNameC" resultType="User">
+        select * from wn_user where user_id in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--YC-->
+
+
+
 </mapper>

@@ -2,6 +2,8 @@ package com.wn.service.impl;
 
 import com.wn.dao.OrderPayDao;
 import com.wn.pojo.OrderPay;
+import com.wn.pojo.Page;
+import com.wn.pojo.User;
 import com.wn.service.OrderPayService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,4 +68,29 @@ public class OrderPayServiceImpl implements OrderPayService {
     public int insertOrderAndPay(OrderPay orderPay) {
         return orderPayDao.insertOrderAndPay(orderPay);
     }
+
+
+/*
+yc
+ */
+
+    @Override
+    public Integer selectCountC() {
+        return orderPayDao.selectCountC();
+    }
+
+    @Override
+    public List<OrderPay> selectLimitC(Page p) {
+        return orderPayDao.selectLimitC(p);
+    }
+
+    @Override
+    public List<User> findInUNameC(Integer[] id) {
+        return orderPayDao.findInUNameC(id);
+    }
+
+    /*
+    YC
+     */
+
 }

@@ -14,7 +14,7 @@ public class ExceptionController {
     自定义异常
      */
     @ExceptionHandler(value = AuthorizationException.class)
-    @ResponseBody
+
     public String Exceptiion(){
         return "unauth";
     }

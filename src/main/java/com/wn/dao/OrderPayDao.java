@@ -1,6 +1,8 @@
 package com.wn.dao;
 
 import com.wn.pojo.OrderPay;
+import com.wn.pojo.Page;
+import com.wn.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -56,6 +58,21 @@ public interface OrderPayDao {
      */
     public int insertOrderAndPay(OrderPay orderPay);
 
+
+
+    /*
+  YC
+   */
+    //查询数据总数
+    public Integer selectCountC();
+    //分页查询
+    public List<OrderPay> selectLimitC(Page p);
+
+    //根据user_id查询user_name
+    public List<User> findInUNameC(Integer[] id);
+/*
+YC
+ */
 
 
 

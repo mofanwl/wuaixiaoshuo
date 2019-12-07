@@ -1,5 +1,6 @@
 package com.wn.dao;
 
+import com.wn.pojo.Page;
 import com.wn.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -71,4 +72,31 @@ public interface UserDao {
 	 * 删除一行数据
 	 */
 	public int del(int user_id);
+
+
+
+	/*
+	YC
+	 */
+	/*
+	 * 模糊查询
+	 */
+	public List<User> selectLikeC(User user);
+	/*
+	 * 增
+	 */
+	public int insertC(User user);
+	/*
+分页
+ */
+	public List<User> selectLimitC(Page p);
+	/*
+	 * 查询总行数
+	 */
+	public int selectCountC(User user);
+	/*
+	YC
+	 */
+
+
 }

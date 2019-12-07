@@ -1,6 +1,7 @@
 package com.wn.service.impl;
 
 import com.wn.dao.UserDao;
+import com.wn.pojo.Page;
 import com.wn.pojo.User;
 import com.wn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,5 +94,35 @@ public class UserServiceImpl implements UserService {
 	public int del(int user_id) {
 		return udao.del(user_id);
 	}
+
+
+
+/*
+	YC
+ */
+@Override
+public List<User> selectLikeC(User user) {
+	return udao.selectLikeC(user);
+}
+
+	@Override
+	public int insertC(User user) {
+		return udao.insertC(user);
+	}
+
+	@Override
+	public List<User> selectLimitC(Page p) {
+		return udao.selectLimitC(p);
+	}
+
+	@Override
+	public int selectCountC(User user) {
+		return udao.selectCountC(user);
+	}
+
+/*
+YC
+ */
+
 
 }

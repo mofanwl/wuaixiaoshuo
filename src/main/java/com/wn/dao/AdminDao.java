@@ -1,6 +1,7 @@
 package com.wn.dao;
 
 import com.wn.pojo.Admin;
+import com.wn.pojo.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -46,4 +47,36 @@ public interface AdminDao {
 	 * 查询总行数
 	 */
 	public int selectCount(Admin admin);
+
+
+
+	/*
+	YC
+	 */
+	/*
+	 * 模糊查询
+	 */
+	public List<Admin> selectLikeC(Admin admin);
+	/*
+	 * 查询全部
+	 */
+	public List<Admin> selectAllC(Admin admin);
+	/*
+	 * 增
+	 */
+	public int insertC(Admin admin);
+	/*
+	 * 查询总行数
+	 */
+	public int selectCountC(Admin admin);
+	/*
+    分页查询+模糊分页
+    */
+	public List<Admin> selectLimitC(Page p);
+	public int insertRc(Admin admin);
+	/*
+	YC
+	 */
+
+
 }
