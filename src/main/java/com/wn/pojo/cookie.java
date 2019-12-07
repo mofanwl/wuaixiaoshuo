@@ -11,4 +11,8 @@ public class cookie {
     private String dlyz;
     private String login;
     private String vip;
+
+    private String user_name;
+    private String user_vip_time;
+    private String user_portrait;
 }
