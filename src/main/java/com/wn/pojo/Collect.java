@@ -19,6 +19,7 @@ public class Collect {
     private String books_count;
     private String books_pic;
     private String books_url;
+    private Integer books_status;
 
     private String type_name;
 

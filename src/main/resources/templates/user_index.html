@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <title>后台管理系统</title>
+
+    <style>
+        #sidebar{
+            width: 200px;
+            position: absolute;
+            z-index: 1;
+        }
+        #main{
+            margin-left: 210px;
+            margin-right: 10px;
+            width: 1200px;
+            margin-top: 74px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+<!--导航-->
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <a href="#" class="navbar-brand">后台管理系统</a>
+    </div>
+    <ul class="nav navbar-nav" style="margin-right: 20px;float:right">
+        <li><a href="#">欢迎用户，<span th:text="${username}"></span></a></li>
+        <li><a th:href="@{/admin/outC}">退出</a></li>
+    </ul>
+</div>
+<!--侧边栏-->
+<div class="navbar-default navbar-collapse" id="sidebar">
+    <ul class="nav">
+        <li>
+            <a href="#sub1" data-toggle="collapse">用户管理<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+            <ul id="sub1" class="nav collapse">
+                <li><a th:href="@{/admin/findLimitC}">管理用户</a></li>
+                <li><a th:href="@{/user/findLimitC}">会员用户</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#sub3" data-toggle="collapse">订单管理<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+            <ul id="sub3" class="nav collapse">
+                <li><a th:href="@{/order/findLimitC}">订单展示</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#sub2" data-toggle="collapse">权限管理<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+            <ul id="sub2" class="nav collapse">
+                <li><a th:href="@{/group/admin_gC}">角色-用户管理</a></li>
+                <li><a th:href="@{/group/perssion_gC}">权限-角色管理</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<!--主页面-->
+<div id="main" >
+
+    <!--会员用户管理-->
+    <div id="main2"  style="display:block;;">
+        <!--搜索-->
+        <form class="navbar-form pull-left" th:action="@{/user/findLikeC}">
+            <input type="text" class="span2" placeholder="请输入账号！" name="user_name">
+            <button type="submit" class="btn">搜索</button>
+        </form>
+        <button  class="btn" style="float: right;" ><a th:href="@{/user/saveC}">新增</a></button>
+        <!-- 第一行-->
+        <div class="row">
+            <div class="col-sm-12">
+                <!--表格-->
+                <div class="panel panel-default"  th:if="${users}==null"  style="display: block;">
+                    <div class="panel-heading">数据展示</div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-bordered" style="word-break:break-all; word-wrap:break-all;">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>账号</th>
+                                <th>密码</th>
+                                <th>别称</th>
+                                <th>QQ</th>
+                                <th>邮箱</th>
+                                <th>电话</th>
+                                <th>状态</th>
+                                <th>这是嘛？</th>
+
+                                <th>删除</th>
+                                <th>修改</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="c,d:${list}">
+                                <td th:text="${c.getUser_id()}"></td>
+                                <td th:text="${c.getUser_name()}"></td>
+                                <td th:text="${c.getUser_pwd()}"></td>
+                                <td th:text="${c.getUser_nick_name()}"></td>
+                                <td th:text="${c.getUser_qq()}"></td>
+                                <td th:text="${c.getUser_email()}"></td>
+                                <td th:text="${c.getUser_phone()}"></td>
+                                <td th:text="${c.getUser_status()}"></td>
+                                <td th:text="${c.getUser_portrait()}"></td>
+
+                                <td ><a th:href="@{/user/updateC(id=${c.getUser_id()})}">修改</a></td>
+                                <td ><a th:href="@{/user/deleteOneC(id=${c.getUser_id()})}">删除</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--模糊查询-->
+                <div class="panel panel-default"  th:if="${users!=null}" style="display:block;">
+                    <div class="panel-heading">数据展示1</div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-bordered" style="word-break:break-all; word-wrap:break-all;">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>账号</th>
+                                <th>密码</th>
+                                <th>别称</th>
+                                <th>QQ</th>
+                                <th>邮箱</th>
+                                <th>电话</th>
+                                <th>状态</th>
+                                <th>这是嘛？</th>
+
+                                <th>删除</th>
+                                <th>修改</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="c,d:${users}">
+                                <td th:text="${c.getUser_id()}"></td>
+                                <td th:text="${c.getUser_name()}"></td>
+                                <td th:text="${c.getUser_pwd()}"></td>
+                                <td th:text="${c.getUser_nick_name()}"></td>
+                                <td th:text="${c.getUser_qq()}"></td>
+                                <td th:text="${c.getUser_email()}"></td>
+                                <td th:text="${c.getUser_phone()}"></td>
+                                <td th:text="${c.getUser_status()}"></td>
+                                <td th:text="${c.getUser_portrait()}"></td>
+
+                                <td ><a th:href="@{/user/updateC(id=${c.getUser_id()})}">修改</a></td>
+                                <td ><a th:href="@{/user/deleteOneC(id=${c.getUser_id()})}">删除</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- 分页-->
+        <div id="main23" th:if="${users}==null">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li>
+                        <a th:href="@{/user/lastpageC}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#" th:text="|第${P.getPage()}页|"></a></li>
+                    <li>
+                        <a th:href="@{/user/indexpageC}"aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li><a th:href="@{/user/startpageC}">首页</a></li>
+                    <li><a th:href="@{/user/endpageC}">末页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div >
+</body>
+</html>

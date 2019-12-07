@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <title>修改</title>
+    <style>
+
+        .form-horizontal {
+            position: absolute;
+            top: 20%;
+            left: 40%;
+        }
+        #tab{
+            height: 250px;
+            width: 300px;
+        }
+        #tab tr{
+            height:50px;
+        }
+        #tab tr td{
+            text-align:center;
+            background: #F5FAFA;
+        }
+    </style>
+
+</head>
+<body style="background-color: #F5FAFA">
+<form class="form-horizontal" th:action="@{/user/update1C}" >
+    <table  id="tab">
+        <tr>
+            <td>编号</td>
+            <td><input type="text"  name="user_id" th:value="${user.getUser_id()}"></td>
+        </tr>
+        <tr>
+            <td>账号</td>
+            <td><input type="text"  name="user_name" th:value="${user.getUser_name()}"></td>
+        </tr>
+        <tr>
+            <td>密码</td>
+            <td><input type="text"  name="user_pwd" th:value="${user.getUser_pwd()}"></td>
+        </tr>
+        <tr>
+            <td>别称</td>
+            <td><input type="text" name="user_nick_name" th:value="${user.getUser_nick_name()}"></td>
+        </tr>
+        <tr>
+            <td>QQ</td>
+            <td><input type="text" name="user_qq" th:value="${user.getUser_qq()}"></td>
+        </tr>
+        <tr>
+            <td>邮箱</td>
+            <td><input type="text"  name="user_email" th:value="${user.getUser_email()}"></td>
+        </tr>
+        <tr>
+            <td>电话</td>
+            <td><input type="text" name="user_phone" th:value="${user.getUser_phone()}"></td>
+        </tr>
+        <tr>
+            <td>状态</td>
+            <td><input type="text" name="user_status" th:value="${user.getUser_status()}"></td>
+        </tr>
+        <tr>
+            <td>这是嘛？</td>
+            <td><input type="text"  name="user_portrait" th:value="${user.getUser_portrait()}"></td>
+        </tr>
+
+        <tr>
+            <td colspan="2"><button type="submit" class="btn">提交修改</button></td>
+        </tr>
+    </table>
+
+
+</form>
+
+</body>
+</html>

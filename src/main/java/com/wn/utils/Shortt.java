@@ -30,7 +30,7 @@ class JuheDemo {
 	public static String userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
 
 	// 配置您申请的KEY
-	public static final String APPKEY = "67622e3642c49c237dfe14251ef8f797";
+	public static final String APPKEY = "67622e3642c49c237dfe14251ef8f7977";
 
 	// 1.屏蔽词检查测
 	public static void getRequest1() {

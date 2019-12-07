@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <title>后台管理系统</title>
+
+    <style>
+        #sidebar{
+            width: 200px;
+            position: absolute;
+            z-index: 1;
+        }
+        #main{
+            margin-left: 210px;
+            margin-right: 10px;
+            width: 1200px;
+            margin-top: 74px;
+        }
+    </style>
+
+</head>
+
+
+<body>
+<!--导航-->
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-header">
+        <a href="#" class="navbar-brand">后台管理系统</a>
+    </div>
+    <ul class="nav navbar-nav" style="margin-right: 20px;float:right">
+        <li><a href="#">欢迎用户，<span th:text="${username}"></span></a></li>
+        <li><a th:href="@{/admin/out}">退出</a></li>
+    </ul>
+</div>
+<!--侧边栏-->
+<div class="navbar-default navbar-collapse" id="sidebar">
+    <ul class="nav">
+        <li>
+            <a href="#sub1" data-toggle="collapse">用户管理<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+            <ul id="sub1" class="nav collapse">
+                <li><a th:href="@{/admin/findLimitC}">管理用户</a></li>
+                <li><a th:href="@{/user/findLimitC}">会员用户</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#sub3" data-toggle="collapse">订单管理<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+            <ul id="sub3" class="nav collapse">
+                <li><a th:href="@{/order/findLimitC}">订单展示</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#sub2" data-toggle="collapse">权限管理<span class="glyphicon glyphicon-chevron-down pull-right"></span></a>
+            <ul id="sub2" class="nav collapse">
+                <li><a th:href="@{/group/admin_gC}">角色-用户管理</a></li>
+                <li><a th:href="@{/group/perssion_gC}">权限-角色管理</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<!--主页面-->
+<div id="main" >
+    <!--订单管理-->
+    <div id="main1"  style="display: block;">
+        <!--搜索-->
+        <!--<form class="navbar-form pull-left" th:action="@{/order/findLikeC}">-->
+            <!--<input type="text" class="span2" placeholder="请输入账号！" name="name">-->
+            <!--<button type="submit" class="btn1">搜索</button>-->
+        <!--</form>-->
+
+        <!-- 第一行-->
+        <div class="row">
+            <div class="col-sm-12">
+                <!--表格-->
+                <div class="panel panel-default"    style="display: block;">
+                    <div class="panel-heading">数据展示</div>
+                    <div class="panel-body">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>订单号</th>
+                                <th>原价</th>
+                                <th>书籍名</th>
+                                <th>成交价</th>
+                                <th>订单状态</th>
+                                <th>所属用户</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="a,b:${pays}">
+                                <td th:text="${a.getPay_id()}"></td>
+                                <td th:text="${a.getOut_trade_no()}"></td>
+                                <td th:text="${a.getTotal_amount()}"></td>
+                                <td th:text="${a.getSubject()}"></td>
+                                <td th:text="${a.getTotal_amount_1()}"></td>
+                                <td th:text="${a.getPay_state()}"></td>
+                                <td th:each="c,d:${users1}">
+                                    <span th:if="${c.getUser_id()}==${a.getUser_id()}" th:text="${c.getUser_name()}">
+                                    </span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--模糊查询-->
+                <!--<div class="panel panel-default"  th:if="${Like}!=null" style="display:block;">-->
+                    <!--<div class="panel-heading">数据展示1</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--<table class="table table-striped table-bordered">-->
+                            <!--<thead>-->
+                            <!--<tr>-->
+                                <!--<th>编号</th>-->
+                                <!--<th>订单号</th>-->
+                                <!--<th>原价</th>-->
+                                <!--<th>书籍名</th>-->
+                                <!--<th>成交价</th>-->
+                                <!--<th>订单状态</th>-->
+                                <!--<th>所属用户</th>-->
+                            <!--</tr>-->
+                            <!--</thead>-->
+                            <!--<tbody>-->
+                            <!--<tr th:each="a,b:${Like}">-->
+                                <!--<td th:text="${a.getPay_id()}"></td>-->
+                                <!--<td th:text="${a.getOut_trade_no()}"></td>-->
+                                <!--<td th:text="${a.getTotal_amount()}"></td>-->
+                                <!--<td th:text="${a.getSubject()}"></td>-->
+                                <!--<td th:text="${a.getTotal_amount_1()}"></td>-->
+                                <!--<td th:text="${a.getPay_state()}"></td>-->
+                                <!--<td th:each="c,d:${usersC}">-->
+                                    <!--<span th:if="${c.getUser_id()}==${a.getUser_id()}" th:text="${c.getUser_name()}">-->
+                                    <!--</span>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            </div>
+        </div>
+        <!-- 分页-->
+        <!--<div id="main13" th:if="${admins}==null">-->
+            <nav aria-label="Page navigation"  style="display:block;">
+                <ul class="pagination">
+                    <li>
+                        <a th:href="@{/order/lastpageC}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#" th:text="|第${P.getPage()}页|"></a></li>
+                    <li>
+                        <a th:href="@{/order/indexpageC}"aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li><a th:href="@{/order/startpageC}">首页</a></li>
+                    <li><a th:href="@{/order/endpageC}">末页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+</div >
+
+</body>
+</html>

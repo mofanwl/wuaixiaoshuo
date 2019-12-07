@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <style>
+
+        .form-horizontal {
+            position: absolute;
+            top: 20%;
+            left: 40%;
+        }
+        .box{
+            width: 2000px;
+            height: 800px;
+            border: 1px solid red;
+
+            background-color: #F5FAFA;
+            /*background: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1575476378765&di=6802781430f6f5120cec4ae6c55a12ee&imgtype=0&src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20181015%2Fc229cc38f255432d83fbc0c2807f0cdf.gif");*/
+            /*!*background-repeat:*!*/
+            /*background-size: 2000px 800px;*/
+            /*background-attachment: fixed;*/
+            /*background-position:center;*/
+        }
+        #tab{
+            height: 250px;
+            width: 300px;
+        }
+        #tab tr{
+            height:50px;
+        }
+        #tab tr td{
+            text-align:center;
+            background: #F5FAFA;
+        }
+
+
+    </style>
+    <title>新增</title>
+</head>
+<body >
+<div class="box">
+    <!--<img th:src="@{/timg.jpg}">-->
+    <form class="form-horizontal" th:action="@{/admin/insertC}" >
+    <table  id="tab">
+        <tr >
+            <td >账号</td>
+            <td ><input type="text"  name="admin_name" ></td>
+        </tr>
+        <tr>
+            <td>密码</td>
+            <td><input type="text"  name="admin_pwd" ></td>
+        </tr>
+        <tr>
+            <td>随机</td>
+            <td><input type="text" name="admin_random" ></td>
+        </tr>
+        <tr>
+            <td>状态</td>
+            <td><input type="text" name="admin_status" ></td>
+        </tr>
+        <tr>
+            <td>认证</td>
+            <td><input type="text"  name="admin_auth" ></td>
+        </tr>
+        <tr>
+            <td>登录时间</td>
+            <td><input type="text" name="admin_login_time" ></td>
+        </tr>
+        <tr>
+            <td>登录ip</td>
+            <td><input type="text" name="admin_login_ip" ></td>
+        </tr>
+        <tr>
+            <td>登录次数</td>
+            <td><input type="text"  name="admin_login_num" ></td>
+        </tr>
+        <tr>
+            <td>最后登录时间</td>
+            <td> <input type="text"  name="admin_last_login_time" ></td>
+        </tr>
+        <tr>
+            <td>最后登录ip</td>
+            <td><input type="text"name="admin_last_login_ip" ></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit" class="btn">提交增加</button></td>
+        </tr>
+    </table>
+
+
+</form>
+
+
+
+</div>
+</body>
+</html>

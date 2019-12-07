@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <script src="/webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <title>修改</title>
+    <style>
+
+        .form-horizontal {
+            position: absolute;
+            top: 20%;
+            left: 40%;
+        }
+        #tab{
+            height: 250px;
+            width: 300px;
+        }
+        #tab tr{
+            height:50px;
+        }
+        #tab tr td{
+            text-align:center;
+            background: #F5FAFA;
+        }
+
+    </style>
+
+</head>
+<body style="background-color: #F5FAFA">
+<form class="form-horizontal" th:action="@{/admin/update1C}" >
+    <table  id="tab">
+        <tr>
+            <td>编号</td>
+            <td><input type="text"  name="admin_id" th:value="${admin.getAdmin_id()}"></td>
+        </tr>
+        <tr>
+            <td>账号</td>
+            <td><input type="text"  name="admin_name" th:value="${admin.getAdmin_name()}"></td>
+        </tr>
+        <tr>
+            <td>密码</td>
+            <td><input type="text"  name="admin_pwd" th:value="${admin.getAdmin_pwd()}"></td>
+        </tr>
+        <tr>
+            <td>随机</td>
+            <td><input type="text" name="admin_random" th:value="${admin.getAdmin_random()}"></td>
+        </tr>
+        <tr>
+            <td>状态</td>
+            <td><input type="text" name="admin_status" th:value="${admin.getAdmin_status()}"></td>
+        </tr>
+        <tr>
+            <td>认证</td>
+            <td><input type="text"  name="admin_auth" th:value="${admin.getAdmin_auth()}"></td>
+        </tr>
+        <tr>
+            <td>登录时间</td>
+            <td><input type="text" name="admin_login_time" th:value="${admin.getAdmin_login_time()}"></td>
+        </tr>
+        <tr>
+            <td>登录ip</td>
+            <td><input type="text" name="admin_login_ip" th:value="${admin.getAdmin_login_ip()}"></td>
+        </tr>
+        <tr>
+            <td>登录次数</td>
+            <td><input type="text"  name="admin_login_num" th:value="${admin.getAdmin_login_num()}"></td>
+        </tr>
+        <tr>
+            <td>最后登录时间</td>
+            <td> <input type="text"  name="admin_last_login_time" th:value="${admin.getAdmin_last_login_time()}"></td>
+        </tr>
+        <tr>
+            <td>最后登录ip</td>
+            <td><input type="text"name="admin_last_login_ip" th:value="${admin.getAdmin_last_login_ip()}"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit" class="btn">提交修改</button></td>
+        </tr>
+    </table>
+
+
+</form>
+
+</body>
+</html>
