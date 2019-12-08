@@ -41,13 +41,39 @@ public class UserController {
 	@Autowired
 	private UploadUtils uploadUtils;
 
+	/*
+     用户的余额查询
+	 */
+	@RequestMapping("selMoney/{user_id}")
+	@ResponseBody
+	public Map<String,String> selMoney(@PathVariable("user_id")Integer user_id){
+		User user = userService.selectUserById(user_id);
+		Map<String,String> map=new HashMap<>();
+		map.put("user_total_mount",user.getUser_total_mount());
+		return map;
+	}
 
 	/*
 	vip充值
 	 */
-	@RequestMapping("/tovip/{user_id}/{mount}")
+	@RequestMapping("/tovip/{user_id}/{date}")
 	@ResponseBody
-	public Map<String,String> tovip(@PathVariable("user_id")Integer user_id,@PathVariable("mount") Float mount){
+	public Map<String,String> tovip(@PathVariable("user_id")Integer user_id,@PathVariable("date") String date){
+		Float mount=0f;
+		Integer time=0;
+        if("1个月".equals(date)){
+			mount=15.00f;
+			time=30;
+		}else if("3个月".equals(date)){
+			mount=40.00f;
+			time=90;
+		}else if("半年".equals(date)){
+			mount=70.00f;
+			time=180;
+		}else if("一年".equals(date)){
+			mount=120.00f;
+			time=365;
+		}
 		Map<String,String> map=new HashMap<>();
 		map.put("msg","no");
 		//查询余额
@@ -59,11 +85,11 @@ public class UserController {
 			user1.setUser_id(user_id);
 			user1.setUser_total_mount(String.valueOf(Float.valueOf(user_total_mount)-mount));
 			//查询用户是否为VIp
-			String aLong = userService.selByVipTime(15);
+			String aLong = userService.selByVipTime(user_id);
 			System.out.println(aLong);
 			String vip = Tools.getVip(aLong);
 			if(vip.equals("vip")){
-				user1.setUser_vip_time(String.valueOf(Tools.toVip2(3,aLong)));
+				user1.setUser_vip_time(String.valueOf(Tools.toVip2(time,aLong)));
 				int update = userService.update(user1);
 				if(update==1){
 					System.out.println("会员充值成功");
@@ -261,8 +287,8 @@ public class UserController {
 	@RequestMapping("short")
 	@ResponseBody
 	public Map<String, String> duanxin(@RequestBody User user, HttpServletRequest request) {
-		System.out.println("手机号short："+user.getUser_phone());
-		String user_phone = request.getParameter("user_phone");
+		System.out.println("手机号short：");
+		String user_phone = user.getUser_phone();
 		PrintWriter pw;
 		HttpSession session = request.getSession();
 		// 发送
@@ -275,7 +301,6 @@ public class UserController {
 		System.out.println(dxht.get(1));
 		map = gson.fromJson(result, Map.class);
 		if ("操作成功".equals(map.get("reason"))) {
-
 			map.put("short_cg", "ok");
 		} else {
 			map.put("short_cg", "no");
@@ -337,6 +362,18 @@ public class UserController {
 				cookies.setTishi("登陆成功");
 				cookies.setDlyz("ok");
 				cookies.setLogin("loginyes");
+				cookies.setUser_name(usera.getUser_name());
+				cookies.setUser_id(usera.getUser_id());
+				//会员判断
+				String vip = Tools.getVip(uuser.getUser_vip_time());
+				if("vip".equals(vip)){
+					cookies.setUser_vip_time(Tools.getVipTime(usera.getUser_vip_time()));
+				}else {
+					cookies.setUser_vip_time("-- --");
+				}
+
+				cookies.setUser_portrait(usera.getUser_portrait());
+				cookies.setUser_total_mount(usera.getUser_total_mount());
 				String aLong = userService.selByVipTime(uuser.getUser_id());
 				cookies.setVip( Tools.getVip(aLong));
 			}else{

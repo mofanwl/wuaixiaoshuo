@@ -7,6 +7,7 @@ import com.wn.service.OrderPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -41,8 +42,14 @@ public class OrderPayController {
     /*
     用户订单的查询
      */
+    @RequestMapping("selUserByPay/{user_id}")
+    @ResponseBody
+    public List<OrderPay> selUserByPay(@PathVariable("user_id") String user_id){
 
+        List<OrderPay> orderPays = orderPayService.selUserByPay(user_id);
+        return orderPays;
 
+    }
 
     /*
 YC

@@ -6,6 +6,7 @@
 	<resultMap type="User" id="baseResultUser">
 
 	</resultMap>
+
 	<!--id查询user-->
 	<select id="selectUserById" parameterType="int" resultMap="baseResultUser">
 		select * from wn_user where user_id=#{user_id}

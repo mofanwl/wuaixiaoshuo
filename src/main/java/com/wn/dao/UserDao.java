@@ -12,6 +12,10 @@ import java.util.Map;
 @Mapper
 public interface UserDao {
 	/*
+	用户的余额查询
+	 */
+	User selMoney(Integer user_id);
+	/*
 	加入会员时间
 	 */
 	public int insertVipTime(User user);

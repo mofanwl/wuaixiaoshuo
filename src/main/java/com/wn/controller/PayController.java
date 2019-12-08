@@ -9,10 +9,7 @@ import com.wn.service.OrderPayService;
 import com.wn.utils.AlipayUtils;
 import com.wn.utils.Tools;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -40,14 +37,17 @@ public class PayController {
     /*
     支付
      */
-    @RequestMapping("/pay")
-    public String pay(){
+    @RequestMapping("/pay/{user_id}/{total_amount}")
+    public String pay(@PathVariable("user_id")Integer user_id,@PathVariable("total_amount")String total_amount){
         String pay="";
+        total_amount=total_amount+".00";
+        System.out.println(total_amount+"充值金额");
+        System.out.println(user_id+"user_id");
         try {
             Pay pays=new Pay();
             String out_trade_no= Tools.getOrderNo();
-            String total_amount="5600.66";
-            String Subject="兰博基尼V12";
+            //total_amount=total_amount;
+            String Subject="吾爱币充值："+total_amount+"元";
             String body="y这个是你买的华为Mate30";
             System.out.println("生成的订单号："+out_trade_no);
             pays.setOut_trade_no(out_trade_no);
@@ -58,7 +58,7 @@ public class PayController {
             //开始支付
 
             OrderPay orderPay = new OrderPay();
-            orderPay.setUser_id(15);
+            orderPay.setUser_id(user_id);
             orderPay.setOut_trade_no(out_trade_no);
             orderPay.setTotal_amount(total_amount);
             orderPay.setSubject(Subject);

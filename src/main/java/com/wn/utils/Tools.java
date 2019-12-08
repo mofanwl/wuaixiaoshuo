@@ -49,7 +49,8 @@ public class Tools {
 
     public static String getVipTime(String time){
         Long timess=Long.valueOf(time);
-        String result = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timess));
+        //String result = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timess));
+        String result = new SimpleDateFormat("yyyy-MM-dd").format(new Date(timess));
         return result;
     }
 

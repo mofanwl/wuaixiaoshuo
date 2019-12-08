@@ -13,6 +13,8 @@ public class cookie {
     private String vip;
 
     private String user_name;
+    private Integer user_id;
     private String user_vip_time;
     private String user_portrait;
+    private String user_total_mount;
 }

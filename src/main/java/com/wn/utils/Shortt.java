@@ -9,6 +9,7 @@ import java.util.*;
 public class Shortt {
 
 	public static List<String> getShort(String user_phone) {
+		System.out.println("这是getShout-------："+user_phone);
 		Random rd = new Random();
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < 6; i++) {
@@ -21,6 +22,7 @@ public class Shortt {
 		dxht.add(suijim);
 		return dxht;
 	}
+
 }
 
 class JuheDemo {
@@ -30,7 +32,7 @@ class JuheDemo {
 	public static String userAgent = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
 
 	// 配置您申请的KEY
-	public static final String APPKEY = "67622e3642c49c237dfe14251ef8f7977";
+	public static final String APPKEY = "67622e3642c49c237dfe14251ef8f797";
 
 	// 1.屏蔽词检查测
 	public static void getRequest1() {
