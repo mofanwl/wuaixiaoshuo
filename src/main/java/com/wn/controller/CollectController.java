@@ -7,10 +7,7 @@ import com.wn.pojo.Msg;
 import com.wn.service.impl.CollectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +28,7 @@ public class CollectController {
 用户加入收藏
      */
     @RequestMapping("/insUserOne")
-    public Map<String,String> insUserOne(Collect collect){
+    public Map<String,String> insUserOne(@RequestBody Collect collect){
         Map<String,String> map=new HashMap<>();
         int i = collectService.insUserOne(collect);
         if(i==1){
@@ -64,6 +61,7 @@ public class CollectController {
      */
    @RequestMapping("/delByBid")
    public Map<String,String> delByBid(@RequestParam("collect_bid")Integer collect_bid){
+       System.out.println(collect_bid+"+++++++++++++++++++++");
        Map<String,String> map=new HashMap<>();
        int i = collectService.delByBid(collect_bid);
        if(i==1){

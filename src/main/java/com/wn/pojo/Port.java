@@ -9,4 +9,5 @@ import lombok.Data;
 public class Port {
     private String code;
     private String msg;
+    private String user_portrait;
 }

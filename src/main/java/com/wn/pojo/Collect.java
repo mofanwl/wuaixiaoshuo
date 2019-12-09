@@ -9,6 +9,7 @@ import lombok.Data;
 @Data
 public class Collect {
     //collect
+    private Integer books_Id;
     private Integer collect_id;
     private Integer collect_uid;
     private Integer collect_bid;

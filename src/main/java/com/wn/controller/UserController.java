@@ -49,6 +49,7 @@ public class UserController {
 	public Map<String,String> selMoney(@PathVariable("user_id")Integer user_id){
 		User user = userService.selectUserById(user_id);
 		Map<String,String> map=new HashMap<>();
+		map.put("user_vip_time",Tools.getVipTime(user.getUser_vip_time()));
 		map.put("user_total_mount",user.getUser_total_mount());
 		return map;
 	}
@@ -123,7 +124,7 @@ public class UserController {
 			String upload = uploadUtils.upload(file);//上传后返回文件名
 			System.out.println(upload);
 			User user = new User();
-			user.setUser_id(14);
+			user.setUser_id(id);
 			user.setUser_portrait(url+upload);
 			//修改
 			int update = userService.update(user);
@@ -131,6 +132,9 @@ public class UserController {
 				System.out.println("ok");
 
 				port.setMsg("ok");
+				User user1 = userService.selectUserById(id);
+
+				port.setUser_portrait(user1.getUser_portrait());
 			}else{
 				System.out.println("no");
 				port.setMsg("no");
